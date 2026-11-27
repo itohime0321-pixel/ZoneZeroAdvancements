@@ -101,14 +101,16 @@ with LOG.open('wb') as out:
         # another namespace and a repeat while announceAdvancements is false.
         # Only two chat announcements should appear, each with its full description.
         log=text()
-        lines=[line for line in log.splitlines() if '【零號禁區】 ZZ_Chat_Test 解鎖了成就' in line]
-        if len(lines)!=2 or not any('「初見殺」' in line for line in lines) or not any('「大家可以回家啦！」' in line for line in lines):
+        lines=[line for line in log.splitlines() if 'ZZ_Chat_Test 達成「' in line]
+        ordinary=[line for line in lines if '達成「初見殺」。' in line]
+        hidden=[line for line in lines if '達成「大家可以回家啦！」。' in line]
+        if len(lines)!=2 or len(ordinary)!=1 or len(hidden)!=1:
             raise AssertionError(f'Expected one chat announcement per ordinary/hidden event, found {lines}')
-        for value in ['墓碑負責記錄失敗的草稿','新手教學的最後一課：你會死。','工程隊全員失業了','累計死亡 1 次。','生存模式下雙手皆空，成功拆除一個混凝土方塊。']:
-            # The root description must remain hidden; the two actual descriptions must appear.
-            if (value in log)==(value=='墓碑負責記錄失敗的草稿'):
-                raise AssertionError(f'Unexpected chat description visibility: {value}')
-        print('PASS: ordinary and hidden achievement chat includes title, description and condition; root, other mods and disabled gamerule excluded.',flush=True)
+        if ('新手教學的最後一課：你會死。' not in ordinary[0] or '累計死亡 1 次。' not in ordinary[0]
+                or '工程隊全員失業了' not in hidden[0] or '生存模式下雙手皆空，成功拆除一個混凝土方塊。' not in hidden[0]
+                or '墓碑負責記錄失敗的草稿' in log):
+            raise AssertionError('Expected entire descriptions on the same logical chat line and no root announcement')
+        print('PASS: one chat entry per ordinary/hidden achievement; full title, description and condition; root, other mods and disabled gamerule excluded.',flush=True)
         print(f'PASS: actual NeoForge server loaded {EXPECTED} ZoneZero advancement definitions, including root.',flush=True)
         print('RCON list:',result,flush=True)
         packs=rcon('datapack list enabled')

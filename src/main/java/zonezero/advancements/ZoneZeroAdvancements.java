@@ -99,13 +99,14 @@ public final class ZoneZeroAdvancements {
         var server=p.getServer();
         if (server==null || !p.level().getGameRules().getBoolean(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)) return;
         earned.value().display().ifPresent(display -> {
-            // The description already contains the humor line plus the exact condition.
-            // Broadcast as one multiline system-chat entry so it works on unmodded clients.
-            Component message=Component.literal("【零號禁區】").withStyle(ChatFormatting.DARK_AQUA)
-                .append(Component.literal(" ").append(p.getDisplayName()).withStyle(ChatFormatting.WHITE))
-                .append(Component.literal(" 解鎖了成就 ").withStyle(ChatFormatting.GRAY))
-                .append(Component.literal("「").append(display.getTitle().copy()).append("」").withStyle(ChatFormatting.GOLD))
-                .append(Component.literal("\n").append(display.getDescription().copy()).withStyle(ChatFormatting.GRAY));
+            // Match the other achievement announcements: one chat entry, no
+            // hard line break. Minecraft wraps long descriptions at the user's
+            // actual chat width, so short messages stay on one line.
+            String description=display.getDescription().getString().replace("\r","").replace("\n"," ");
+            Component message=Component.empty().append(p.getDisplayName())
+                .append(Component.literal(" 達成「").withStyle(ChatFormatting.GRAY))
+                .append(display.getTitle().copy().withStyle(ChatFormatting.GOLD))
+                .append(Component.literal("」。"+description).withStyle(ChatFormatting.GRAY));
             server.getPlayerList().broadcastSystemMessage(message,false);
         });
     }
