@@ -196,7 +196,7 @@
       "event": "deaths",
       "threshold": 486,
       "hidden": true,
-      "description": "無論重來多少次，我都會抵達那個未曾見過的明天。",
+      "description": "重來了 486 次，存檔點仍然不願給你請假。\n累計死亡 486 次。",
       "frame": "challenge",
       "announce": true
     },
@@ -205,7 +205,7 @@
       "event": "shelter_teleport",
       "threshold": 10,
       "hidden": true,
-      "description": "沿著熟悉的路，回到廢土中屬於自己的安身之處。\n成功使用庇護所傳送石 10 次。",
+      "description": "回家的路最美，尤其身後那群感染者看不到你家的地址。\n成功使用庇護所傳送石 10 次。",
       "reference": "John Denver"
     },
     {
@@ -213,7 +213,7 @@
       "event": "zombie_survival_streak",
       "threshold": 50,
       "hidden": true,
-      "description": "即使廢土沒有盡頭，也別放棄生存。\n不死亡連續討伐 50 隻殭屍。",
+      "description": "不要停止相信自己。死神已經連續 50 次預約不到你了。\n不死亡連續討伐 50 隻殭屍。",
       "reference": "Journey"
     },
     {
@@ -221,7 +221,7 @@
       "event": "burning_zombie_kill",
       "threshold": 25,
       "hidden": true,
-      "description": "火光映照著你的戰場。\n擊殺 25 隻正在燃燒的殭屍。",
+      "description": "今晚的烤肉派對取消了，因為食材一直想咬客人。\n擊殺 25 隻正在燃燒的殭屍。",
       "reference": "Johnny Cash"
     },
     {
@@ -229,7 +229,7 @@
       "event": "full_moon_zombie_kill",
       "threshold": 20,
       "hidden": true,
-      "description": "滿月下的感染者，比夜色更令人不安。\n於主世界滿月之夜討伐 20 隻殭屍。",
+      "description": "滿月適合賞月。可惜應邀前來的賓客連訃聞都寫不好。\n於主世界滿月之夜討伐 20 隻殭屍。",
       "reference": "Creedence Clearwater Revival"
     },
     {
@@ -237,7 +237,7 @@
       "event": "unarmed_zombie_kill",
       "threshold": 50,
       "hidden": true,
-      "description": "不靠裝備，也要打出自己的生路。\n累計徒手擊殺 50 隻殭屍。",
+      "description": "手套不是必要裝備，但醫療部建議你起碼買份保險。\n累計徒手擊殺 50 隻殭屍。",
       "reference": "Survivor"
     },
     {
@@ -245,7 +245,7 @@
       "event": "all_zones",
       "threshold": 7,
       "hidden": true,
-      "description": "每一道封鎖線，都留下了你的足跡。\n完成全部七個探索區成就。",
+      "description": "七區全走過了，打卡沒問題；如果有附贈返程票就更好了。\n完成全部七個探索區成就。",
       "reference": "Johnny Cash"
     },
     {
@@ -253,7 +253,7 @@
       "event": "rain_zombie_kill",
       "threshold": 10,
       "hidden": true,
-      "description": "雨水沖刷著街道，卻沖不走感染者。\n在主世界自然降雨中討伐 10 隻殭屍。",
+      "description": "這雨下得很有氣氛，可惜這次沒有客人記得帶傘。\n在主世界自然降雨中討伐 10 隻殭屍。",
       "reference": "Creedence Clearwater Revival"
     },
     {
@@ -261,7 +261,7 @@
       "event": "summit",
       "threshold": 1,
       "hidden": true,
-      "description": "廢墟之上，還有一片開闊的天空。\n抵達主世界 Y=300 以上並站穩於地面。",
+      "description": "從這裡可以看見整座廢土。下去的方式請不要直接模仿鳥類。\n抵達主世界 Y=300 以上並站穩於地面。",
       "reference": "Marvin Gaye & Tammi Terrell"
     },
     {
@@ -269,7 +269,7 @@
       "event": "villager_kill",
       "threshold": 1,
       "hidden": true,
-      "description": "這不是原本預定的行動。\n首次造成村民死亡。",
+      "description": "媽媽，我闖禍了。這回村長大概不會給我折扣了。\n首次造成村民死亡。",
       "reference": "Queen"
     },
     {
@@ -277,7 +277,7 @@
       "event": "zombie_burst",
       "threshold": 5,
       "hidden": true,
-      "description": "一個接著一個，終於清出了退路。\n10 秒（200 遊戲刻）內擊殺 5 隻殭屍。",
+      "description": "早點收工是好習慣；它們只是剛好也一起提早下班。\n10 秒（200 遊戲刻）內擊殺 5 隻殭屍。",
       "reference": "Queen"
     }
   ]

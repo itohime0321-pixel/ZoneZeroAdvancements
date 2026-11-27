@@ -6,6 +6,12 @@ files={str(p.relative_to(d).with_suffix('')).replace('\\','/'):json.loads(p.read
 assert len(files)==198
 assert len({f['display']['title'] for f in files.values()})==198
 assert len({f['display']['description'] for f in files.values()})==198
+# All 197 achievement intros have a distinct flavor line and a separate, explicit condition.
+for key,f in files.items():
+ if key!='root':
+  lines=f['display']['description'].splitlines()
+  assert len(lines)==2 and all(line.strip() for line in lines),key
+assert len({f['display']['description'].splitlines()[0] for k,f in files.items() if k!='root'})==197
 assert sum(f['display']['hidden'] for f in files.values())==41
 for key,v in files.items():
  if 'parent' in v: assert v['parent'].split(':',1)[1] in files
