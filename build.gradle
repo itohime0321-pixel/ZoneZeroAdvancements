@@ -22,7 +22,7 @@ tasks.named('processResources') { dependsOn 'generateAdvancements' }
 tasks.register('buildIconPack', Exec) {
     inputs.files('tools/build_resource_pack.py', 'art/icon_manifest.json')
     inputs.dir('art/icons')
-    outputs.file(layout.buildDirectory.file('distributions/ZoneZeroAdvancements-Icons-Batch01.zip'))
+    outputs.file(layout.buildDirectory.file('distributions/ZoneZeroAdvancements-Icons.zip'))
     commandLine python.get(), 'tools/build_resource_pack.py'
 }
 tasks.register('validateAdvancements', Exec) {

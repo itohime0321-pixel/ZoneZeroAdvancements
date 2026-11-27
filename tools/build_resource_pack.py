@@ -3,11 +3,11 @@ from pathlib import Path
 import json, zipfile
 root=Path(__file__).resolve().parents[1]
 manifest=json.loads((root/'art/icon_manifest.json').read_text())
-output=root/'build/distributions/ZoneZeroAdvancements-Icons-Batch01.zip'
+output=root/'build/distributions/ZoneZeroAdvancements-Icons.zip'
 output.parent.mkdir(parents=True,exist_ok=True)
 def encode(obj):return json.dumps(obj,ensure_ascii=False,indent=2)+'\n'
 with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED) as z:
-    z.writestr('pack.mcmeta',encode({'pack':{'pack_format':34,'description':'零號禁區｜第一批 20 張成就像素圖示'}}))
+    z.writestr('pack.mcmeta',encode({'pack':{'pack_format':34,'description':f'零號禁區｜{len(manifest)} 張成就像素圖示'}}))
     overrides=[]
     for path,item in sorted(manifest.items(),key=lambda x:x[1]['model_data']):
         name=path.replace('/','_')

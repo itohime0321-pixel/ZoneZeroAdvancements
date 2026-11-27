@@ -78,5 +78,85 @@
   "death/750": {
     "model_data": 772019,
     "texture": "art/icons/death/750.png"
+  },
+  "death/800": {
+    "model_data": 772020,
+    "texture": "art/icons/death/800.png"
+  },
+  "death/850": {
+    "model_data": 772021,
+    "texture": "art/icons/death/850.png"
+  },
+  "death/900": {
+    "model_data": 772022,
+    "texture": "art/icons/death/900.png"
+  },
+  "death/950": {
+    "model_data": 772023,
+    "texture": "art/icons/death/950.png"
+  },
+  "death/1000": {
+    "model_data": 772024,
+    "texture": "art/icons/death/1000.png"
+  },
+  "zombie/2900": {
+    "model_data": 772025,
+    "texture": "art/icons/zombie/2900.png"
+  },
+  "zombie/3600": {
+    "model_data": 772026,
+    "texture": "art/icons/zombie/3600.png"
+  },
+  "zombie/4000": {
+    "model_data": 772027,
+    "texture": "art/icons/zombie/4000.png"
+  },
+  "zombie/7200": {
+    "model_data": 772028,
+    "texture": "art/icons/zombie/7200.png"
+  },
+  "zombie/8000": {
+    "model_data": 772029,
+    "texture": "art/icons/zombie/8000.png"
+  },
+  "zombie/9100": {
+    "model_data": 772030,
+    "texture": "art/icons/zombie/9100.png"
+  },
+  "zombie/9600": {
+    "model_data": 772031,
+    "texture": "art/icons/zombie/9600.png"
+  },
+  "zombie/9700": {
+    "model_data": 772032,
+    "texture": "art/icons/zombie/9700.png"
+  },
+  "zombie/9800": {
+    "model_data": 772033,
+    "texture": "art/icons/zombie/9800.png"
+  },
+  "zombie/9900": {
+    "model_data": 772034,
+    "texture": "art/icons/zombie/9900.png"
+  },
+  "genetics/1": {
+    "model_data": 772035,
+    "texture": "art/icons/genetics/1.png"
+  },
+  "guns/40": {
+    "model_data": 772036,
+    "texture": "art/icons/guns/40.png"
+  },
+  "economy/500": {
+    "model_data": 772037,
+    "texture": "art/icons/economy/500.png"
+  },
+  "hidden/centipede_death/1": {
+    "model_data": 772038,
+    "texture": "art/icons/hidden/centipede_death/1.png"
+  },
+  "hidden/revive_other/100": {
+    "model_data": 772039,
+    "texture": "art/icons/hidden/revive_other/100.png"
   }
 }

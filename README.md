@@ -32,14 +32,18 @@ ZoneZeroAdvancements.recordExternal(serverPlayer, "revived");
 
 可用事件：revived, revive_other, downed_death, gun_headshot_kill, shelter_create, shelter_teleport, low_health_teleport, herb_thrombosis, medical_use（僅限未經物品完成使用事件計數的特殊醫療行為，避免重複）。不提供公共指令或客戶端自行回報的方式。實際事件接入要另外確認來源及成功條件。
 
-## 第一批圖示
-art/icons 含 20 張原創、透明背景、32×32 像素且使用同一 32 色以內調色盤的死亡圖示。Re：486、某個人的日常已包含。其餘暫時用原版物品圖示。資源包採用 1.21.1 paper CustomModelData 772000～772019；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。資源包未載入時，首批以原版紙張顯示。
+## 成就圖示（累計 40 張）
+- 第一批：20 張死亡系列圖示（包含 Re：486、某個人的日常）。
+- 第二批：死亡系列剩餘 5 張、殭屍討伐 10 張、基因／槍械／瓶蓋各 1 張、隱藏 2 張；新增的 14 項電馭叛客與銀翼殺手致敬成就均有專屬圖示。
+- 全部為原創、透明背景、32×32 像素，共用 32 色以內的調色盤。第一批像素及模型 ID 均保留；其他成就暫用原版物品圖示。
+- 資源包採用 1.21.1 paper CustomModelData 772000～772039。新版 `ZoneZeroAdvancements-Icons.zip` 已包含前兩批，使用時移除舊的 Batch01 資源包；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。未載入時，這 40 張以原版紙張顯示。
+- [第二批圖示預覽](art/previews/Batch02.png)
 
 ## 編譯與測試
 安裝 Java 21 / Gradle 8.10.2 / Python 3，執行：
 ```sh
 gradle clean build
 ```
-若 python 指令不存在，設定 PYTHON=python3。會生成 188 份 advancement JSON（187 項 + 根節點），驗證數量、唯一名稱、描述、父節點、圖示連結、七區距離邊界與技能起始基準，並產出 build/libs/*.jar 與 build/distributions/ZoneZeroAdvancements-Icons-Batch01.zip。GitHub Actions 同時提供這兩個測試產物。編譯通過不等於遊戲連線與所有事件測試通過。
+若 python 指令不存在，設定 PYTHON=python3。會生成 188 份 advancement JSON（187 項 + 根節點），驗證數量、唯一名稱、描述、父節點、圖示連結、七區距離邊界與技能起始基準，並產出 build/libs/*.jar 與 build/distributions/ZoneZeroAdvancements-Icons.zip。GitHub Actions 同時提供這兩個測試產物。編譯通過不等於遊戲連線與所有事件測試通過。
 
 測試請使用獨立世界，不要直接安裝到正式伺服器。確認死亡重生、重新登入、伺服器重啟紀錄保留；測試七區邊界、殭屍掉落機制不變、Pufferfish 資料唯讀、隱藏成就未完成前不可見、資源包有無載入均可連線。
