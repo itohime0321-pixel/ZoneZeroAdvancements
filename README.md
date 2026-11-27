@@ -32,16 +32,17 @@ ZoneZeroAdvancements.recordExternal(serverPlayer, "revived");
 
 可用事件：revived, revive_other, downed_death, gun_headshot_kill, shelter_create, shelter_teleport, low_health_teleport, herb_thrombosis, medical_use（僅限未經物品完成使用事件計數的特殊醫療行為，避免重複）。不提供公共指令或客戶端自行回報的方式。實際事件接入要另外確認來源及成功條件。
 
-## 成就圖示（累計 100 張）
+## 成就圖示（累計 120 張）
 - 第一批：20 張死亡系列圖示（包含 Re：486、某個人的日常）。
 - 第二批：死亡系列剩餘 5 張、殭屍討伐 10 張、基因／槍械／瓶蓋各 1 張、隱藏 2 張；新增的 14 項電馭叛客與銀翼殺手致敬成就均有專屬圖示。
 - 全部為原創、透明背景、32×32 像素，共用 32 色以內的調色盤。第一批像素及全部既有模型 ID 均保留；其他成就暫用原版物品圖示。
-- 資源包採用 1.21.1 paper CustomModelData 772000～772099。新版 `ZoneZeroAdvancements-Icons.zip` 已包含前五批，使用時移除舊的 Batch01 資源包；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。未載入時，這 100 張以原版紙張顯示。
+- 資源包採用 1.21.1 paper CustomModelData 772000～772119。新版 `ZoneZeroAdvancements-Icons.zip` 已包含前六批，使用時移除舊的 Batch01 資源包；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。未載入時，這 120 張以原版紙張顯示。
 - 第三批：基因 5 張、槍械 10 張、探索 5 張。死亡、基因及槍械系列皆已繪製完畢。
 - 依原始風格要求，第二批起圖示使用低彩度、簡約像素筆觸，不使用霓虹發光效果。全部圖示共用最多 32 色（含透明）。
 - 第四批：探索 2 張、瓶蓋 7 張、隱藏 11 張；探索及瓶蓋系列皆已繪製完畢。
 - 第五批：隱藏 17 張、殭屍討伐 3 張。所有隱藏成就的圖示已齊全；其餘待繪皆為殭屍討伐。
-- [第二批圖示預覽](art/previews/Batch02.png) · [第三批圖示預覽](art/previews/Batch03.png) · [第四批圖示預覽](art/previews/Batch04.png) · [第五批圖示預覽](art/previews/Batch05.png)
+- 第六批：殭屍討伐 400～2,300 隻的 20 張專屬圖示。
+- [第二批圖示預覽](art/previews/Batch02.png) · [第三批圖示預覽](art/previews/Batch03.png) · [第四批圖示預覽](art/previews/Batch04.png) · [第五批圖示預覽](art/previews/Batch05.png) · [第六批圖示預覽](art/previews/Batch06.png)
 
 ## 編譯與測試
 安裝 Java 21 / Gradle 8.10.2 / Python 3，執行：

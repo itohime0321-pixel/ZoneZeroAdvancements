@@ -398,5 +398,85 @@
   "zombie/300": {
     "model_data": 772099,
     "texture": "art/icons/zombie/300.png"
+  },
+  "zombie/400": {
+    "model_data": 772100,
+    "texture": "art/icons/zombie/400.png"
+  },
+  "zombie/500": {
+    "model_data": 772101,
+    "texture": "art/icons/zombie/500.png"
+  },
+  "zombie/600": {
+    "model_data": 772102,
+    "texture": "art/icons/zombie/600.png"
+  },
+  "zombie/700": {
+    "model_data": 772103,
+    "texture": "art/icons/zombie/700.png"
+  },
+  "zombie/800": {
+    "model_data": 772104,
+    "texture": "art/icons/zombie/800.png"
+  },
+  "zombie/900": {
+    "model_data": 772105,
+    "texture": "art/icons/zombie/900.png"
+  },
+  "zombie/1000": {
+    "model_data": 772106,
+    "texture": "art/icons/zombie/1000.png"
+  },
+  "zombie/1100": {
+    "model_data": 772107,
+    "texture": "art/icons/zombie/1100.png"
+  },
+  "zombie/1200": {
+    "model_data": 772108,
+    "texture": "art/icons/zombie/1200.png"
+  },
+  "zombie/1300": {
+    "model_data": 772109,
+    "texture": "art/icons/zombie/1300.png"
+  },
+  "zombie/1400": {
+    "model_data": 772110,
+    "texture": "art/icons/zombie/1400.png"
+  },
+  "zombie/1500": {
+    "model_data": 772111,
+    "texture": "art/icons/zombie/1500.png"
+  },
+  "zombie/1600": {
+    "model_data": 772112,
+    "texture": "art/icons/zombie/1600.png"
+  },
+  "zombie/1700": {
+    "model_data": 772113,
+    "texture": "art/icons/zombie/1700.png"
+  },
+  "zombie/1800": {
+    "model_data": 772114,
+    "texture": "art/icons/zombie/1800.png"
+  },
+  "zombie/1900": {
+    "model_data": 772115,
+    "texture": "art/icons/zombie/1900.png"
+  },
+  "zombie/2000": {
+    "model_data": 772116,
+    "texture": "art/icons/zombie/2000.png"
+  },
+  "zombie/2100": {
+    "model_data": 772117,
+    "texture": "art/icons/zombie/2100.png"
+  },
+  "zombie/2200": {
+    "model_data": 772118,
+    "texture": "art/icons/zombie/2200.png"
+  },
+  "zombie/2300": {
+    "model_data": 772119,
+    "texture": "art/icons/zombie/2300.png"
   }
 }
