@@ -158,5 +158,85 @@
   "hidden/revive_other/100": {
     "model_data": 772039,
     "texture": "art/icons/hidden/revive_other/100.png"
+  },
+  "genetics/10": {
+    "model_data": 772040,
+    "texture": "art/icons/genetics/10.png"
+  },
+  "genetics/20": {
+    "model_data": 772041,
+    "texture": "art/icons/genetics/20.png"
+  },
+  "genetics/30": {
+    "model_data": 772042,
+    "texture": "art/icons/genetics/30.png"
+  },
+  "genetics/40": {
+    "model_data": 772043,
+    "texture": "art/icons/genetics/40.png"
+  },
+  "genetics/46": {
+    "model_data": 772044,
+    "texture": "art/icons/genetics/46.png"
+  },
+  "guns/1": {
+    "model_data": 772045,
+    "texture": "art/icons/guns/1.png"
+  },
+  "guns/10": {
+    "model_data": 772046,
+    "texture": "art/icons/guns/10.png"
+  },
+  "guns/20": {
+    "model_data": 772047,
+    "texture": "art/icons/guns/20.png"
+  },
+  "guns/30": {
+    "model_data": 772048,
+    "texture": "art/icons/guns/30.png"
+  },
+  "guns/50": {
+    "model_data": 772049,
+    "texture": "art/icons/guns/50.png"
+  },
+  "guns/60": {
+    "model_data": 772050,
+    "texture": "art/icons/guns/60.png"
+  },
+  "guns/70": {
+    "model_data": 772051,
+    "texture": "art/icons/guns/70.png"
+  },
+  "guns/80": {
+    "model_data": 772052,
+    "texture": "art/icons/guns/80.png"
+  },
+  "guns/90": {
+    "model_data": 772053,
+    "texture": "art/icons/guns/90.png"
+  },
+  "guns/93": {
+    "model_data": 772054,
+    "texture": "art/icons/guns/93.png"
+  },
+  "exploration/1": {
+    "model_data": 772055,
+    "texture": "art/icons/exploration/1.png"
+  },
+  "exploration/2": {
+    "model_data": 772056,
+    "texture": "art/icons/exploration/2.png"
+  },
+  "exploration/3": {
+    "model_data": 772057,
+    "texture": "art/icons/exploration/3.png"
+  },
+  "exploration/4": {
+    "model_data": 772058,
+    "texture": "art/icons/exploration/4.png"
+  },
+  "exploration/5": {
+    "model_data": 772059,
+    "texture": "art/icons/exploration/5.png"
   }
 }
