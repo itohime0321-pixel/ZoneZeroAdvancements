@@ -3,6 +3,11 @@ package zonezero.advancements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import java.util.UUID;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 /** Optional, observational integration. Never modifies other mods' return values or gameplay. */
 public final class IntegrationHooks {
@@ -12,7 +17,32 @@ public final class IntegrationHooks {
     // Separate from the mixin's class initializer, with a stack for nested command functions.
     private record Before(LivingEntity entity,ResourceLocation function,int duration,boolean eligible) {}
     private static final ThreadLocal<java.util.ArrayDeque<Before>> MEDICAL=new ThreadLocal<>();
+    private static final Set<LivingDeathEvent> DOWNED_DEATH=Collections.newSetFromMap(new WeakHashMap<>());
+    private record Rescue(UUID target,UUID rescuer) {}
+    private static final ThreadLocal<Rescue> RESCUE=new ThreadLocal<>();
     private IntegrationHooks() {}
+    public static void markDownedDeath(LivingDeathEvent event,ServerPlayer player) {
+        if (player.getServer()!=null && player.getServer().isSameThread()) DOWNED_DEATH.add(event);
+    }
+    public static boolean consumeDownedDeath(LivingDeathEvent event) {
+        return DOWNED_DEATH.remove(event);
+    }
+    public static void clearRevive() { RESCUE.remove(); }
+    public static void startRevive(ServerPlayer target,UUID rescuer) {
+        clearRevive();
+        if (rescuer==null || rescuer.equals(target.getUUID()) || target.getServer()==null || !target.getServer().isSameThread()) return;
+        RESCUE.set(new Rescue(target.getUUID(),rescuer));
+    }
+    public static void finishRevive(ServerPlayer target,boolean noLongerDowned) {
+        Rescue rescue=RESCUE.get();
+        clearRevive();
+        if (rescue==null || !rescue.target().equals(target.getUUID()) || target.getServer()==null
+                || !target.getServer().isSameThread()) return;
+        ServerPlayer rescuer=target.getServer().getPlayerList().getPlayer(rescue.rescuer());
+        if (!ZoneRules.confirmedRevive(true,!noLongerDowned,target.isAlive(),rescuer!=null && rescuer!=target)) return;
+        ZoneZeroAdvancements.recordExternal(target,"revived");
+        ZoneZeroAdvancements.recordExternal(rescuer,"revive_other");
+    }
     public static void shelterCreated(ServerPlayer p,boolean success) {
         if (success) ZoneZeroAdvancements.recordExternal(p,"shelter_create");
     }

@@ -35,6 +35,14 @@ public final class ZoneRulesTest {
                 || ZoneRules.newEffectDuration(6000,6000) || ZoneRules.newEffectDuration(6000,0)
                 || ZoneRules.newEffectDuration(-1,6000) || !ZoneRules.newEffectDuration(6000,-1))
             throw new AssertionError("new thrombosis effect or duration extension");
-        System.out.println("PASS: seven radial boundaries and fresh skill point baselines, full moon nights and rolling bursts");
+        if (!ZoneRules.confirmedHeadshot(true,true,true,true,true,true)) throw new AssertionError("headshot success");
+        for (int i=0;i<6;i++) {
+            boolean[] v={true,true,true,true,true,true};v[i]=false;
+            if (ZoneRules.confirmedHeadshot(v[0],v[1],v[2],v[3],v[4],v[5])) throw new AssertionError("headshot false positive "+i);
+        }
+        if (!ZoneRules.confirmedRevive(true,false,true,true) || ZoneRules.confirmedRevive(false,false,true,true)
+                || ZoneRules.confirmedRevive(true,true,true,true) || ZoneRules.confirmedRevive(true,false,false,true)
+                || ZoneRules.confirmedRevive(true,false,true,false)) throw new AssertionError("revive success/failure");
+        System.out.println("PASS: seven radial boundaries and fresh skill point baselines, full moon nights and rolling bursts, confirmed headshots and completed rescues");
     }
 }

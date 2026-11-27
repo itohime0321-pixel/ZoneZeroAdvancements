@@ -35,6 +35,13 @@ public final class ZoneRules {
     public static boolean newEffectDuration(int before,int after) {
         return before!=-1 && (after==-1 || (after>0 && after>before));
     }
+    public static boolean confirmedHeadshot(boolean server,boolean headshot,boolean killed,
+                                                boolean attacker,boolean sameDamage,boolean sameTick) {
+        return server && headshot && killed && attacker && sameDamage && sameTick;
+    }
+    public static boolean confirmedRevive(boolean wasDowned,boolean stillDowned,boolean alive,boolean validRescuer) {
+        return wasDowned && !stillDowned && alive && validRescuer;
+    }
     public static int newProgress(int initial, int current) {
         return Math.max(0,current - Math.max(0,initial));
     }

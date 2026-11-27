@@ -7,6 +7,14 @@ version = '0.2.0'
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = '21.1.172'
+    runs {
+        smokeServer {
+            server()
+            gameDirectory = project.file(providers.gradleProperty('zzSmokeDir').orElse('build/smoke-server').get())
+            programArgument('--nogui')
+            jvmArgument('-Xmx2G')
+        }
+    }
     mods {
         zonezero_advancements { sourceSet sourceSets.main }
     }

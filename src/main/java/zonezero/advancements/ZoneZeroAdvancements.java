@@ -25,6 +25,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -63,6 +64,15 @@ public final class ZoneZeroAdvancements {
         NeoForge.EVENT_BUS.addListener(this::onClone);
         NeoForge.EVENT_BUS.addListener(this::onLogout);
         NeoForge.EVENT_BUS.addListener(this::onTick);
+        GunKillBridge.register();
+        NeoForge.EVENT_BUS.addListener(this::onServerStarted);
+    }
+    private void onServerStarted(ServerStartedEvent event) {
+        var manager=event.getServer().getAdvancements();
+        long count=manager.getAllAdvancements().stream().filter(a->MOD.equals(a.id().getNamespace())).count();
+        LogUtils.getLogger().info("ZoneZero: loaded {} advancement definitions (including root).",count);
+        if (manager.get(id("root"))==null)
+            LogUtils.getLogger().warn("ZoneZero: root advancement is missing; inspect data pack loading.");
     }
     private static ResourceLocation id(String path) {return ResourceLocation.fromNamespaceAndPath(MOD,path);}
     private static void loadConfiguration() {
@@ -130,11 +140,13 @@ public final class ZoneZeroAdvancements {
     private static String typeId(Entity e) {return BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();}
     private static int zone(Entity e) {return e.level().dimension().equals(Level.OVERWORLD)? ZoneRules.zone(e.getX(),e.getZ()):0;}
     private void onDeath(LivingDeathEvent event) {
+        boolean downed=IntegrationHooks.consumeDownedDeath(event);
         if (event.isCanceled() || event.getEntity().level().isClientSide()) return;
         Entity victim=event.getEntity(), killer=event.getSource().getEntity();
         var source=event.getSource();
         long tick=victim.level().getGameTime();
         if (victim instanceof ServerPlayer p) {
+            if (downed) recordExternal(p,"downed_death");
             int deaths=add(p,"deaths"); data(p).putInt("peaceful_ticks",0);
             data(p).putInt("hidden_zombie_survival_streak",0);
             ZOMBIE_BURSTS.remove(p.getUUID());
@@ -153,6 +165,7 @@ public final class ZoneZeroAdvancements {
             }
         }
         if (killer instanceof ServerPlayer p && p!=victim) {
+            GunKillBridge.noteDeath(event.getEntity(),p,source);
             data(p).putInt("peaceful_ticks",0);
             if (matches(LAST_DEATHS.remove(p.getUUID()),victim,tick)) award(p,"hidden/mutual_death/1");
             else LAST_KILLS.put(p.getUUID(),new Pair(victim.getUUID(),tick));

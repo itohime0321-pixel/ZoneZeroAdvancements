@@ -37,6 +37,15 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
             if(m.name.equals(name) && m.desc.equals(desc) && (m.access&Opcodes.ACC_STATIC)!=0) return m;
         return null;
     }
+    private static boolean field(ClassNode node,String name,String desc,boolean isStatic) {
+        return node.fields.stream().anyMatch(f->f.name.equals(name) && f.desc.equals(desc)
+                && ((f.access&Opcodes.ACC_STATIC)!=0)==isStatic);
+    }
+    private static boolean calls(MethodNode method,String owner,String name,String desc) {
+        if (method==null) return false;
+        for (AbstractInsnNode insn:method.instructions) if (call(insn,owner,name,desc)) return true;
+        return false;
+    }
     private static boolean call(AbstractInsnNode insn,String owner,String name,String desc) {
         return insn instanceof MethodInsnNode m && m.owner.equals(owner) && m.name.equals(name) && m.desc.equals(desc);
     }
@@ -72,6 +81,38 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
                 }
             }
             return teleports==1 && shrinks==1 && successIndex>=0 && shrinkIndex>successIndex;
+        }
+        if (mixin.endsWith(".BleedOutReviveDataAccessor")) {
+            return field(node,"reviverId","Ljava/util/UUID;",false);
+        }
+        if (mixin.endsWith(".BleedOutMixin")) {
+            String owner="com/covalscy/bleedout/BleedOutHandler";
+            String player="Lnet/minecraft/server/level/ServerPlayer;";
+            MethodNode tick=method(node,"onPlayerTick","(Lnet/neoforged/neoforge/event/tick/PlayerTickEvent$Post;)V");
+            MethodNode death=method(node,"onPlayerDeath","(Lnet/neoforged/neoforge/event/entity/living/LivingDeathEvent;)V");
+            MethodNode revive=method(node,"revivePlayer","("+player+")V");
+            MethodNode bleeding=method(node,"isBleeding","(Lnet/minecraft/world/entity/player/Player;)Z");
+            if (tick==null || death==null || revive==null || bleeding==null
+                    || !field(node,"bleedingPlayers","Ljava/util/Map;",true)
+                    || !field(node,"revivingPlayers","Ljava/util/Map;",true)
+                    || !field(node,"dyingPlayers","Ljava/util/Set;",true)) return false;
+            int successfulCalls=0;
+            for (AbstractInsnNode insn:tick.instructions)
+                if (call(insn,owner,"revivePlayer","("+player+")V")) successfulCalls++;
+            if (successfulCalls!=1 || !calls(revive,owner,"stopRevive","("+player+"ZZ)V")
+                    || !calls(revive,"net/minecraft/server/level/ServerPlayer","setHealth","(F)V")
+                    || !calls(death,"net/neoforged/neoforge/event/entity/living/LivingDeathEvent","setCanceled","(Z)V"))
+                return false;
+            // The snapshot must be taken before our own LOWEST-priority death handler.
+            if (death.visibleAnnotations==null) return false;
+            for (var a:death.visibleAnnotations) {
+                if (!a.desc.equals("Lnet/neoforged/bus/api/SubscribeEvent;") || a.values==null) continue;
+                for (int i=0;i+1<a.values.size();i+=2) {
+                    if ("priority".equals(a.values.get(i)) && a.values.get(i+1) instanceof String[] value
+                            && value.length==2 && "HIGHEST".equals(value[1])) return true;
+                }
+            }
+            return false;
         }
         if (mixin.endsWith(".MedicineFunctionMixin")) {
             MethodNode m=method(node,"executeFunction","(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/resources/ResourceLocation;)V");
