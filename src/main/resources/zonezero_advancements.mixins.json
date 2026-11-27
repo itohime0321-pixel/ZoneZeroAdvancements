@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "zonezero.advancements.mixin",
+  "plugin": "zonezero.advancements.mixin.IntegrationMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["PersonalShelterMixin", "TeleportStoneMixin", "MedicineFunctionMixin"],
+  "injectors": {"defaultRequire": 0}
+}

@@ -2,7 +2,7 @@
 
 Minecraft 1.21.1 / NeoForge 21.1 / Java 21。目標為純伺服器端，未新增物品、方塊或自訂網路封包。原版客戶端成就資料由伺服器同步。專屬圖示另使用可選資源包；**目前為開發測試版，尚未完成正式伺服器實測。**
 
-## 成就數量（187 項，不包含根節點）
+## 成就數量（197 項，不包含根節點）
 | 系列 | 數量 | 條件 |
 |---|---:|---|
 | 死亡 | 24 | 1～1,000 次 |
@@ -11,7 +11,7 @@ Minecraft 1.21.1 / NeoForge 21.1 / Java 21。目標為純伺服器端，未新�
 | 槍械 | 11 | 新投入 1、10～90、93 |
 | 探索 | 7 | 玩家可見七區 |
 | 瓶蓋 | 8 | 新增持有額 1～100,000 |
-| 隱藏 | 31 | 包含 Re：486 |
+| 隱藏 | 41 | 包含 Re：486 與 10 項經典歌曲致敬 |
  
 所有名稱、描述皆使用繁體中文，並加入台灣、日本與歐美迷因及作品致敬，不使用中國網路流行語。不統計食物種類，不發放物品獎勵。
 
@@ -23,8 +23,29 @@ Minecraft 1.21.1 / NeoForge 21.1 / Java 21。目標為純伺服器端，未新�
 - 隱藏成就：死亡原因、洞穴蜈蚣、徒手及近戰、殘血擊殺、同歸於盡（同一對敵手 5 秒內）、第七區討伐、六種乖乖放置、午夜進食、酒類完成飲用、已列入標籤的醫療用品完成使用、連續在線 8 小時、和平主義者（存活且未擊殺生物 24,000 tick）、技能雙滿及核心全達成。
 - 近戰、酒類及醫療用品由資料包 item tags 控制；武器/藥物不在已驗證清單時不會隨便計數。食物隱藏成就只判定實際進食時刻，不保存食物種類。
 
-## 尚未接入外部模組的事件
-救援／被救、倒地死亡、TaCZ 爆頭、建立庇護所、使用庇護所傳送石、因藥草錯誤使用造成血栓均保留完整成就定義與伺服器側事件橋接，但**未宣稱可以自動解鎖**。需在對應模組的成功事件實際接入後才能啟用。橋接函式：
+## 經典歌曲致敬（10 項新隱藏成就）
+| 曲名 | 音樂人 | 判定 |
+|---|---|---|
+| Take Me Home, Country Roads | John Denver | 成功使用庇護所傳送石 10 次 |
+| Don't Stop Believin' | Journey | 不死亡連續討伐 50 隻殭屍（死亡清零） |
+| Ring of Fire | Johnny Cash | 擊殺 25 隻正在燃燒的殭屍 |
+| Bad Moon Rising | Creedence Clearwater Revival | 主世界滿月之夜討伐 20 隻殭屍 |
+| Eye of the Tiger | Survivor | 徒手擊殺 50 隻殭屍 |
+| I Walk the Line | Johnny Cash | 完成七個探索區成就 |
+| Have You Ever Seen the Rain? | Creedence Clearwater Revival | 主世界自然降雨時討伐 10 隻殭屍 |
+| Ain't No Mountain High Enough | Marvin Gaye & Tammi Terrell | 在主世界新移動至 Y ≥ 300 並站穩於地面 |
+| Bohemian Rhapsody | Queen | 首次由玩家造成村民死亡（無法區分誤殺或故意） |
+| Another One Bites the Dust | Queen | 200 遊戲刻內擊殺 5 隻殭屍（死亡、登出結束連殺窗口） |
+
+保留原有成就名稱、ID 與模型編號。曲名致敬不包含歌詞、音樂或專輯封面。
+
+## 外部事件整合（待遊戲實測）
+以可選 Mixin 觀察以下已檢查的模組版本；缺少模組或目標程式結構不符時跳過對應橋接，不更動其他模組行為。
+- PersonalShelter 1.0.9：只在私人庇護所建立方法回傳成功時記錄。
+- ZoneZeroTeleport 1.0.4：只在成功傳送並消耗傳送石時記錄（包含已綁定的分區傳送石）；剩餘生命值未滿一顆心時另記殘血撤離。首次及第十次分別解鎖。
+- Meds and Herbs 1.2.1：在長春花的藥效函式執行前後比對，無內出血且實際新增或延長血栓才記錄。不修改藥效持續時間。
+
+救援／被救、倒地死亡、TaCZ 爆頭仍保留完整成就定義與伺服器側事件橋接，尚未找到對應版本的成功事件來源，因此**不宣稱可以自動解鎖**。橋接函式：
 
 ```java
 ZoneZeroAdvancements.recordExternal(serverPlayer, "revived");
@@ -32,11 +53,11 @@ ZoneZeroAdvancements.recordExternal(serverPlayer, "revived");
 
 可用事件：revived, revive_other, downed_death, gun_headshot_kill, shelter_create, shelter_teleport, low_health_teleport, herb_thrombosis, medical_use（僅限未經物品完成使用事件計數的特殊醫療行為，避免重複）。不提供公共指令或客戶端自行回報的方式。實際事件接入要另外確認來源及成功條件。
 
-## 成就圖示（187 張成就圖示 + 1 張根節點圖示）
+## 成就圖示（197 張成就圖示 + 1 張根節點圖示）
 - 第一批：20 張死亡系列圖示（包含 Re：486、某個人的日常）。
 - 第二批：死亡系列剩餘 5 張、殭屍討伐 10 張、基因／槍械／瓶蓋各 1 張、隱藏 2 張；新增的 14 項電馭叛客與銀翼殺手致敬成就均有專屬圖示。
-- 全部為原創、透明背景、32×32 像素，共用 32 色以內的調色盤。全部 187 個成就及根節點皆使用專屬圖示；既有模型 ID 均保留。
-- 資源包採用 1.21.1 paper CustomModelData 772000～772187。新版 `ZoneZeroAdvancements-Icons.zip` 已包含全部十批，使用時移除舊的 Batch01 資源包；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。未載入時，這 188 張以原版紙張顯示。
+- 全部為原創、透明背景、32×32 像素，共用 32 色以內的調色盤。全部 197 個成就及根節點皆使用專屬圖示；既有模型 ID 均保留。
+- 資源包採用 1.21.1 paper CustomModelData 772000～772197。新版 `ZoneZeroAdvancements-Icons.zip` 已包含全部十一批，使用時移除舊的 Batch01 資源包；若現有資源包有自訂 paper 模型，必須合併 overrides，不能直接覆蓋其他既有模型。未載入時，這 198 張以原版紙張顯示。
 - 第三批：基因 5 張、槍械 10 張、探索 5 張。死亡、基因及槍械系列皆已繪製完畢。
 - 依原始風格要求，第二批起圖示使用低彩度、簡約像素筆觸，不使用霓虹發光效果。全部圖示共用最多 32 色（含透明）。
 - 第四批：探索 2 張、瓶蓋 7 張、隱藏 11 張；探索及瓶蓋系列皆已繪製完畢。
@@ -46,13 +67,16 @@ ZoneZeroAdvancements.recordExternal(serverPlayer, "revived");
 - 第八批：殭屍討伐 4,700～6,600 隻的 20 張專屬圖示。
 - 第九批：殭屍討伐 6,700～8,800 隻之間尚未繪製的 20 張專屬圖示。
 - 第十批：最後 7 張高階討伐圖示（含 10,000 隻）；新增根節點金屬 0 徽章，更新第七區探索與討伐隱藏成就圖示的零號識別，判定不變。
-- [第二批圖示預覽](art/previews/Batch02.png) · [第三批圖示預覽](art/previews/Batch03.png) · [第四批圖示預覽](art/previews/Batch04.png) · [第五批圖示預覽](art/previews/Batch05.png) · [第六批圖示預覽](art/previews/Batch06.png) · [第七批圖示預覽](art/previews/Batch07.png) · [第八批圖示預覽](art/previews/Batch08.png) · [第九批圖示預覽](art/previews/Batch09.png) · [第十批圖示預覽](art/previews/Batch10.png)
+- 第十一批：10 張經典歌曲致敬圖示（含兩張 Queen），沿用原有共用調色盤。
+- [第十一批圖示預覽](art/previews/Batch11.png) · [第二批圖示預覽](art/previews/Batch02.png) · [第三批圖示預覽](art/previews/Batch03.png) · [第四批圖示預覽](art/previews/Batch04.png) · [第五批圖示預覽](art/previews/Batch05.png) · [第六批圖示預覽](art/previews/Batch06.png) · [第七批圖示預覽](art/previews/Batch07.png) · [第八批圖示預覽](art/previews/Batch08.png) · [第九批圖示預覽](art/previews/Batch09.png) · [第十批圖示預覽](art/previews/Batch10.png)
 
 ## 編譯與測試
 安裝 Java 21 / Gradle 8.10.2 / Python 3，執行：
 ```sh
 gradle clean build
 ```
-若 python 指令不存在，設定 PYTHON=python3。會生成 188 份 advancement JSON（187 項 + 根節點），驗證數量、唯一名稱、描述、父節點、圖示連結、七區距離邊界與技能起始基準，並產出 build/libs/*.jar 與 build/distributions/ZoneZeroAdvancements-Icons.zip。GitHub Actions 同時提供這兩個測試產物。編譯通過不等於遊戲連線與所有事件測試通過。
+若 python 指令不存在，設定 PYTHON=python3。會生成 198 份 advancement JSON（197 項 + 根節點），驗證數量、唯一名稱、描述、父節點、圖示連結、七區距離邊界、技能起始基準、滿月時段、連殺時間窗口與新增血栓判定，並產出 build/libs/*.jar 與 build/distributions/ZoneZeroAdvancements-Icons.zip。GitHub Actions 同時提供這兩個測試產物。編譯通過不等於遊戲連線與所有事件測試通過。
 
 測試請使用獨立世界，不要直接安裝到正式伺服器。確認死亡重生、重新登入、伺服器重啟紀錄保留；測試七區邊界、殭屍掉落機制不變、Pufferfish 資料唯讀、隱藏成就未完成前不可見、資源包有無載入均可連線。
+
+新增實測清單：成功與中斷的傳送、殘血門檻、首次與第十次傳送、已存在/首次建立的私人庇護所、正常治療與錯誤長春花使用、既有血栓未改變、沒有外部模組時啟動。歌曲成就需測試村民死因的歸屬、50 隻不死連殺、200/201 刻連殺邊界、下雨與躲雨、滿月與普通夜間、七區完成與重新登入、高處落地與原地登入。

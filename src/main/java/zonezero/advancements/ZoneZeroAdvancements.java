@@ -46,9 +46,10 @@ public final class ZoneZeroAdvancements {
     private static final Map<String,int[]> EXTERNAL=Map.ofEntries(
         Map.entry("revived",new int[]{1}),Map.entry("revive_other",new int[]{100,500}),
         Map.entry("downed_death",new int[]{1}),Map.entry("gun_headshot_kill",new int[]{1}),
-        Map.entry("shelter_create",new int[]{1}),Map.entry("shelter_teleport",new int[]{1}),
+        Map.entry("shelter_create",new int[]{1}),Map.entry("shelter_teleport",new int[]{1,10}),
         Map.entry("low_health_teleport",new int[]{1}),Map.entry("herb_thrombosis",new int[]{1}),
         Map.entry("medical_use",new int[]{1000}));
+    private static final Map<UUID,ArrayDeque<Long>> ZOMBIE_BURSTS=new HashMap<>();
     private static final Map<UUID,Long> SESSIONS=new HashMap<>();
     private static final Map<UUID,Pair> LAST_KILLS=new HashMap<>(), LAST_DEATHS=new HashMap<>();
     private record Pair(UUID other,long tick) {}
@@ -107,7 +108,7 @@ public final class ZoneZeroAdvancements {
     private void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         SESSIONS.put(p.getUUID(),System.nanoTime());
-        LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),zone(p)});
+        LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),zone(p),p.getY()});
         restoreAwards(p);
         settle(p);
     }
@@ -123,7 +124,7 @@ public final class ZoneZeroAdvancements {
     }
     private void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         UUID uuid=event.getEntity().getUUID();
-        SESSIONS.remove(uuid);LAST_POSITION.remove(uuid);LAST_KILLS.remove(uuid);LAST_DEATHS.remove(uuid);
+        SESSIONS.remove(uuid);ZOMBIE_BURSTS.remove(uuid);LAST_POSITION.remove(uuid);LAST_KILLS.remove(uuid);LAST_DEATHS.remove(uuid);
     }
     private static boolean zombie(Entity e) {return e!=null && e.getType().is(ZOMBIES);}
     private static String typeId(Entity e) {return BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();}
@@ -135,6 +136,8 @@ public final class ZoneZeroAdvancements {
         long tick=victim.level().getGameTime();
         if (victim instanceof ServerPlayer p) {
             int deaths=add(p,"deaths"); data(p).putInt("peaceful_ticks",0);
+            data(p).putInt("hidden_zombie_survival_streak",0);
+            ZOMBIE_BURSTS.remove(p.getUUID());
             milestones(p,"death",deaths,ZoneRules.DEATHS);
             if (zombie(killer)) record(p,"zombie_death",500);
             if (killer!=null && typeId(killer).equals("alexsmobs:centipede_head")) record(p,"centipede_death",1);
@@ -153,14 +156,29 @@ public final class ZoneZeroAdvancements {
             data(p).putInt("peaceful_ticks",0);
             if (matches(LAST_DEATHS.remove(p.getUUID()),victim,tick)) award(p,"hidden/mutual_death/1");
             else LAST_KILLS.put(p.getUUID(),new Pair(victim.getUUID(),tick));
+            if (victim.getType()==EntityType.VILLAGER) record(p,"villager_kill",1);
             if (!zombie(victim)) return;
+            record(p,"zombie_survival_streak",50);
+            if (victim.isOnFire()) record(p,"burning_zombie_kill",25);
+            if (victim.level().dimension().equals(Level.OVERWORLD)) {
+                if (ZoneRules.fullMoonNight(victim.level().getDayTime())) record(p,"full_moon_zombie_kill",20);
+                if (victim.level().isRainingAt(victim.blockPosition())) record(p,"rain_zombie_kill",10);
+            }
+            if (!done(p,"hidden/zombie_burst/5") && p.getServer()!=null) {
+                var burst=ZOMBIE_BURSTS.computeIfAbsent(p.getUUID(),k->new ArrayDeque<>());
+                long now=p.getServer().overworld().getGameTime();
+                if (ZoneRules.addBurstKill(burst,now)) {
+                    award(p,"hidden/zombie_burst/5");
+                    ZOMBIE_BURSTS.remove(p.getUUID());
+                }
+            }
             int kills=add(p,"zombie_kills");
             if (kills<=10000 && kills%100==0) award(p,"zombie/"+kills);
             if (source.is(DamageTypes.PLAYER_ATTACK) && source.getDirectEntity()==p) {
-                if (p.getMainHandItem().isEmpty()) record(p,"unarmed_zombie_kill",1);
+                if (p.getMainHandItem().isEmpty()) record(p,"unarmed_zombie_kill",1,50);
                 else if (p.getMainHandItem().is(MELEE)) record(p,"melee_zombie_kill",1000);
             }
-            if (p.getHealth()<=2.0F) record(p,"low_health_zombie_kill",1);
+            if (p.getHealth()<2.0F) record(p,"low_health_zombie_kill",1);
             if (zone(victim)==7 && zone(p)==7) record(p,"zone7_zombie_kill",1000);
         }
     }
@@ -196,11 +214,20 @@ public final class ZoneZeroAdvancements {
         // Exploration is based on current position, never the highest unlocked ring.
         int zone=zone(p);
         double[] previous=LAST_POSITION.get(p.getUUID());
-        if (previous==null) previous=new double[]{p.getX(),p.getZ(),zone};
-        if(zone>0 && (previous[2]!=zone || Math.abs(previous[0]-p.getX())+Math.abs(previous[1]-p.getZ())>0.1)) {
+        if (previous==null) previous=new double[]{p.getX(),p.getZ(),zone,p.getY()};
+        boolean moved=Math.abs(previous[0]-p.getX())+Math.abs(previous[1]-p.getZ())>0.1;
+        boolean movedVertically=Math.abs(previous[3]-p.getY())>0.1;
+        if (zone>0 && (previous[2]!=zone || moved)) {
             award(p,"exploration/"+zone);
-            LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),zone});
-        } else if(zone==0) LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),0});
+            boolean all=true;
+            for (int n=1;n<=7;n++) if (!done(p,"exploration/"+n)) {all=false;break;}
+            if (all) award(p,"hidden/all_zones/7");
+        }
+        if ((moved || movedVertically) && p.level().dimension().equals(Level.OVERWORLD)
+                && p.getY()>=300 && p.onGround() && !p.isSpectator() && !p.getAbilities().flying)
+            award(p,"hidden/summit/1");
+        if (moved || movedVertically || previous[2]!=zone || zone==0)
+            LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),zone,p.getY()});
         if (p.tickCount%100==0) settle(p);
         Long start=SESSIONS.get(p.getUUID());
         if(start!=null && System.nanoTime()-start>=8L*60*60*1_000_000_000L) award(p,"hidden/session_hours/8");
@@ -235,13 +262,6 @@ public final class ZoneZeroAdvancements {
         milestones(p,"death",d.getInt("deaths"),ZoneRules.DEATHS);
         int kills=d.getInt("zombie_kills");
         for(int n=100;n<=Math.min(kills,10000);n+=100) award(p,"zombie/"+n);
-        Map<String,int[]> recovery=new HashMap<>(EXTERNAL);
-        recovery.put("zombie_death",new int[]{500});
-        for(String key:List.of("centipede_death","player_death","fall_death","drown_death","fire_death","unarmed_zombie_kill","low_health_zombie_kill")) recovery.put(key,new int[]{1});
-        recovery.put("melee_zombie_kill",new int[]{1000});
-        recovery.put("zone7_zombie_kill",new int[]{1000});
-        recovery.put("alcohol",new int[]{1,100});
-        recovery.forEach((key,thresholds)->{int count=d.getInt("hidden_"+key);for(int n:thresholds) if(count>=n) award(p,"hidden/"+key+"/"+n);});
     }
     private static int checkSkill(ServerPlayer p,String path,String namespace,String category,int[] thresholds) {
         Integer actual=SkillsBridge.spent(p,namespace,category);

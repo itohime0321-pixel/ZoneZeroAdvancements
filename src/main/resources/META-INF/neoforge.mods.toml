@@ -20,3 +20,5 @@ versionRange="[1.21.1,1.21.2)"
 ordering="NONE"
 side="BOTH"
 
+[[mixins]]
+config="zonezero_advancements.mixins.json"

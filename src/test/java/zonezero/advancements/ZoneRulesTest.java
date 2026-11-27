@@ -21,6 +21,20 @@ public final class ZoneRulesTest {
         eq(ZoneRules.newProgress(20,10),0);
         eq(ZoneRules.newProgress(0,46),46);
         eq(ZoneRules.newProgress(0,93),93);
-        System.out.println("PASS: seven radial boundaries and fresh skill point baselines");
+        if (ZoneRules.fullMoonNight(12999) || !ZoneRules.fullMoonNight(13000)
+                || !ZoneRules.fullMoonNight(22999) || ZoneRules.fullMoonNight(23000)
+                || ZoneRules.fullMoonNight(24000+18000)
+                || !ZoneRules.fullMoonNight(8*24000L+18000)) throw new AssertionError("full moon boundaries");
+        var burst=new java.util.ArrayDeque<Long>();
+        for (long t:new long[]{0,50,100,150}) if (ZoneRules.addBurstKill(burst,t)) throw new AssertionError("early burst");
+        if (!ZoneRules.addBurstKill(burst,200)) throw new AssertionError("inclusive 200 tick burst");
+        burst.clear();
+        for (long t:new long[]{0,50,100,150,201}) if (ZoneRules.addBurstKill(burst,t)) throw new AssertionError("expired burst");
+        if (!ZoneRules.addBurstKill(burst,220)) throw new AssertionError("rolling burst");
+        if (!ZoneRules.newEffectDuration(0,6000) || !ZoneRules.newEffectDuration(1,6000)
+                || ZoneRules.newEffectDuration(6000,6000) || ZoneRules.newEffectDuration(6000,0)
+                || ZoneRules.newEffectDuration(-1,6000) || !ZoneRules.newEffectDuration(6000,-1))
+            throw new AssertionError("new thrombosis effect or duration extension");
+        System.out.println("PASS: seven radial boundaries and fresh skill point baselines, full moon nights and rolling bursts");
     }
 }

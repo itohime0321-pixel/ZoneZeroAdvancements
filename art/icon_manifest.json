@@ -750,5 +750,45 @@
   "root": {
     "model_data": 772187,
     "texture": "art/icons/root.png"
+  },
+  "hidden/shelter_teleport/10": {
+    "model_data": 772188,
+    "texture": "art/icons/hidden/shelter_teleport/10.png"
+  },
+  "hidden/zombie_survival_streak/50": {
+    "model_data": 772189,
+    "texture": "art/icons/hidden/zombie_survival_streak/50.png"
+  },
+  "hidden/burning_zombie_kill/25": {
+    "model_data": 772190,
+    "texture": "art/icons/hidden/burning_zombie_kill/25.png"
+  },
+  "hidden/full_moon_zombie_kill/20": {
+    "model_data": 772191,
+    "texture": "art/icons/hidden/full_moon_zombie_kill/20.png"
+  },
+  "hidden/unarmed_zombie_kill/50": {
+    "model_data": 772192,
+    "texture": "art/icons/hidden/unarmed_zombie_kill/50.png"
+  },
+  "hidden/all_zones/7": {
+    "model_data": 772193,
+    "texture": "art/icons/hidden/all_zones/7.png"
+  },
+  "hidden/rain_zombie_kill/10": {
+    "model_data": 772194,
+    "texture": "art/icons/hidden/rain_zombie_kill/10.png"
+  },
+  "hidden/summit/1": {
+    "model_data": 772195,
+    "texture": "art/icons/hidden/summit/1.png"
+  },
+  "hidden/villager_kill/1": {
+    "model_data": 772196,
+    "texture": "art/icons/hidden/villager_kill/1.png"
+  },
+  "hidden/zombie_burst/5": {
+    "model_data": 772197,
+    "texture": "art/icons/hidden/zombie_burst/5.png"
   }
 }

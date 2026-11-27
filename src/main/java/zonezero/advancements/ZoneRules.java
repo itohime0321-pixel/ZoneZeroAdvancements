@@ -19,6 +19,22 @@ public final class ZoneRules {
         }
         return 0;
     }
+    /** Vanilla full moon (phase 0) and night time; no client clock needed. */
+    public static boolean fullMoonNight(long dayTime) {
+        long day=Math.floorDiv(dayTime,24000L);
+        long time=Math.floorMod(dayTime,24000L);
+        return Math.floorMod(day,8L)==0 && time>=13000 && time<23000;
+    }
+    /** Five confirmed kills within a rolling ten-second game-tick window. */
+    public static boolean addBurstKill(java.util.ArrayDeque<Long> kills,long now) {
+        if (!kills.isEmpty() && now<kills.peekLast()) kills.clear();
+        while (!kills.isEmpty() && now-kills.peekFirst()>200) kills.removeFirst();
+        kills.addLast(now);
+        return kills.size()>=5;
+    }
+    public static boolean newEffectDuration(int before,int after) {
+        return before!=-1 && (after==-1 || (after>0 && after>before));
+    }
     public static int newProgress(int initial, int current) {
         return Math.max(0,current - Math.max(0,initial));
     }

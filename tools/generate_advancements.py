@@ -62,9 +62,10 @@ for index,h in enumerate(hidden):
  key=h['event']
  n=h['threshold']
  all_titles.append(h['title'])
- node('hidden/'+key+'/'+str(n),h['title'],hidden_flavor[index]+'\n'+descriptions[key]+'（'+str(n)+'）。','minecraft:echo_shard','root',True,False)
-assert len(all_titles)==187
+ desc=h['description'] if 'description' in h else hidden_flavor[index]+'\n'+descriptions[key]+'（'+str(n)+'）。'
+ node('hidden/'+key+'/'+str(n),h['title'],desc,'minecraft:echo_shard','root',True,False)
+assert len(all_titles)==197
 assert len(all_titles)==len(set(all_titles))
-assert len(list(out.rglob('*.json')))==188
-print('Generated 187 achievements and one root.')
+assert len(list(out.rglob('*.json')))==198
+print('Generated 197 achievements and one root.')
 
