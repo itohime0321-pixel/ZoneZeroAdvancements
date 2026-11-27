@@ -238,5 +238,85 @@
   "exploration/5": {
     "model_data": 772059,
     "texture": "art/icons/exploration/5.png"
+  },
+  "exploration/6": {
+    "model_data": 772060,
+    "texture": "art/icons/exploration/6.png"
+  },
+  "exploration/7": {
+    "model_data": 772061,
+    "texture": "art/icons/exploration/7.png"
+  },
+  "economy/1": {
+    "model_data": 772062,
+    "texture": "art/icons/economy/1.png"
+  },
+  "economy/100": {
+    "model_data": 772063,
+    "texture": "art/icons/economy/100.png"
+  },
+  "economy/1000": {
+    "model_data": 772064,
+    "texture": "art/icons/economy/1000.png"
+  },
+  "economy/5000": {
+    "model_data": 772065,
+    "texture": "art/icons/economy/5000.png"
+  },
+  "economy/10000": {
+    "model_data": 772066,
+    "texture": "art/icons/economy/10000.png"
+  },
+  "economy/50000": {
+    "model_data": 772067,
+    "texture": "art/icons/economy/50000.png"
+  },
+  "economy/100000": {
+    "model_data": 772068,
+    "texture": "art/icons/economy/100000.png"
+  },
+  "hidden/revived/1": {
+    "model_data": 772069,
+    "texture": "art/icons/hidden/revived/1.png"
+  },
+  "hidden/revive_other/500": {
+    "model_data": 772070,
+    "texture": "art/icons/hidden/revive_other/500.png"
+  },
+  "hidden/downed_death/1": {
+    "model_data": 772071,
+    "texture": "art/icons/hidden/downed_death/1.png"
+  },
+  "hidden/fall_death/1": {
+    "model_data": 772072,
+    "texture": "art/icons/hidden/fall_death/1.png"
+  },
+  "hidden/drown_death/1": {
+    "model_data": 772073,
+    "texture": "art/icons/hidden/drown_death/1.png"
+  },
+  "hidden/fire_death/1": {
+    "model_data": 772074,
+    "texture": "art/icons/hidden/fire_death/1.png"
+  },
+  "hidden/mutual_death/1": {
+    "model_data": 772075,
+    "texture": "art/icons/hidden/mutual_death/1.png"
+  },
+  "hidden/player_death/1": {
+    "model_data": 772076,
+    "texture": "art/icons/hidden/player_death/1.png"
+  },
+  "hidden/unarmed_zombie_kill/1": {
+    "model_data": 772077,
+    "texture": "art/icons/hidden/unarmed_zombie_kill/1.png"
+  },
+  "hidden/gun_headshot_kill/1": {
+    "model_data": 772078,
+    "texture": "art/icons/hidden/gun_headshot_kill/1.png"
+  },
+  "hidden/melee_zombie_kill/1000": {
+    "model_data": 772079,
+    "texture": "art/icons/hidden/melee_zombie_kill/1000.png"
   }
 }
