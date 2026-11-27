@@ -36,7 +36,7 @@ for i,z in enumerate(data['zombies']):
  n=z['count']
  node('zombie/'+str(n),z['title'],zombie_flavor[i]+'\n累計討伐 '+str(n)+' 隻殭屍。','minecraft:rotten_flesh','root' if i==0 else 'zombie/'+str(n-100),challenge=n%1000==0)
 series=[
- ('genetics',data['genetics']['thresholds'],'電子羊之夢|我不做人啦！|感染者的未來|超級士兵計畫|生命的奇蹟|零號生命體','投入基因技能點','minecraft:ghast_tear'),
+ ('genetics',data['genetics']['thresholds'],'仿生人會夢見電子羊嗎？|我不做人啦！|感染者的未來|超級士兵計畫|生命的奇蹟|零號生命體','投入基因技能點','minecraft:ghast_tear'),
  ('guns',data['guns']['thresholds'],'我需要一把槍|槍之勇者|薩科塔的天賦|這就是我的槍道|超夢射擊課|戰爭機器|企鵝物流|槍之惡魔|傳奇傭兵|人形兵器|零號戰爭兵器','投入槍械技能點','minecraft:crossbow'),
  ('exploration',list(range(1,8)),'|'.join(data['exploration']['names']),'抵達禁區第','minecraft:map'),
  ('economy',data['economy']['thresholds'],'戰爭，戰爭從未改變|廢土拾荒者|歐元？這裡只收瓶蓋！|廢土商人|資本主義的勝利|瓶蓋大亨|財富自由|廢土華爾街','持有瓶蓋','minecraft:gold_nugget')
