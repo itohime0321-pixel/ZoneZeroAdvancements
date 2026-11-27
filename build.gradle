@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev' version '2.0.78'
+}
+group = 'zonezero'
+version = '0.1.0'
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+neoForge {
+    version = '21.1.172'
+    mods {
+        zonezero_advancements { sourceSet sourceSets.main }
+    }
+}
+tasks.register('generateAdvancements', Exec) {
+    commandLine 'python', 'tools/generate_advancements.py'
+}
+tasks.named('processResources') { dependsOn 'generateAdvancements' }
