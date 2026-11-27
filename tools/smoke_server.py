@@ -104,9 +104,11 @@ with LOG.open('wb') as out:
         # another namespace and a repeat while announceAdvancements is false.
         # Only two chat announcements should appear, each with its full description.
         log=text()
-        lines=[line for line in log.splitlines() if 'ZZ_Chat_Test 達成「' in line]
-        ordinary=[line for line in lines if '達成「初見殺」。' in line]
-        hidden=[line for line in lines if '達成「大家可以回家啦！」。' in line]
+        if 'ZoneZero test: verified white prefix, green bracketed title, white description.' not in log:
+            raise AssertionError('Expected actual Minecraft chat components to have white/green/white colors')
+        lines=[line for line in log.splitlines() if 'ZZ_Chat_Test 已完成進度 [' in line]
+        ordinary=[line for line in lines if '已完成進度 [初見殺]。' in line]
+        hidden=[line for line in lines if '已完成進度 [大家可以回家啦！]。' in line]
         if len(lines)!=2 or len(ordinary)!=1 or len(hidden)!=1:
             raise AssertionError(f'Expected one chat announcement per ordinary/hidden event, found {lines}')
         if ('新手教學的最後一課：你會死。' not in ordinary[0] or '累計死亡 1 次。' not in ordinary[0]

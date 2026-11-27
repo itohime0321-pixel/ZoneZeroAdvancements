@@ -3,7 +3,7 @@ loaderVersion="[4,)"
 license="All Rights Reserved"
 [[mods]]
 modId="zonezero_advancements"
-version="0.2.1"
+version="0.2.2"
 displayName="Zone Zero Advancements"
 description="零號禁區專屬成就"
 displayTest="IGNORE_ALL_VERSION"

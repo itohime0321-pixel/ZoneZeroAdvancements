@@ -101,16 +101,16 @@ public final class ZoneZeroAdvancements {
         var server=p.getServer();
         if (server==null || !p.level().getGameRules().getBoolean(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)) return;
         earned.value().display().ifPresent(display -> {
-            // Match the other achievement announcements: one chat entry, no
-            // hard line break. Minecraft wraps long descriptions at the user's
-            // actual chat width, so short messages stay on one line.
-            String description=display.getDescription().getString().replace("\r","").replace("\n"," ");
-            Component message=Component.empty().append(p.getDisplayName())
-                .append(Component.literal(" 達成「").withStyle(ChatFormatting.GRAY))
-                .append(display.getTitle().copy().withStyle(ChatFormatting.GOLD))
-                .append(Component.literal("」。"+description).withStyle(ChatFormatting.GRAY));
-            server.getPlayerList().broadcastSystemMessage(message,false);
+            server.getPlayerList().broadcastSystemMessage(formatAnnouncement(p.getDisplayName(),display),false);
         });
+    }
+    /** Vanilla-style green bracketed title; white description, one naturally wrapped entry. */
+    private static Component formatAnnouncement(Component playerName, net.minecraft.advancements.DisplayInfo display) {
+        String description=display.getDescription().getString().replace("\r","").replace("\n"," ");
+        return Component.empty().append(playerName)
+            .append(Component.literal(" 已完成進度 ").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("["+display.getTitle().getString()+"]").withStyle(ChatFormatting.GREEN))
+            .append(Component.literal("。"+description).withStyle(ChatFormatting.WHITE));
     }
     /** Strictly opt-in isolated CI: inject earned events, not persistent player awards. */
     private static void verifyChatAnnouncements(net.minecraft.server.MinecraftServer server) {
@@ -119,6 +119,18 @@ public final class ZoneZeroAdvancements {
         var manager=server.getAdvancements();
         var ordinary=Objects.requireNonNull(manager.get(id("death/1")));
         var hidden=Objects.requireNonNull(manager.get(id("hidden/barehand_concrete_break/1")));
+        var preview=formatAnnouncement(fake.getDisplayName(),ordinary.value().display().orElseThrow());
+        var segments=preview.getSiblings();
+        if (segments.size()!=4
+                || !segments.get(1).getString().equals(" 已完成進度 ")
+                || !segments.get(2).getString().equals("[初見殺]")
+                || !segments.get(3).getString().startsWith("。"))
+            throw new IllegalStateException("Unexpected achievement chat component structure");
+        if (segments.get(1).getStyle().getColor().getValue()!=0xffffff
+                || segments.get(2).getStyle().getColor().getValue()!=0x55ff55
+                || segments.get(3).getStyle().getColor().getValue()!=0xffffff)
+            throw new IllegalStateException("Achievement chat prefix/title/description colors differ from white/green/white");
+        LogUtils.getLogger().info("ZoneZero test: verified white prefix, green bracketed title, white description.");
         var root=Objects.requireNonNull(manager.get(id("root")));
         var unrelated=Objects.requireNonNull(manager.get(ResourceLocation.fromNamespaceAndPath("minecraft","story/root")));
         var rule=server.overworld().getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS);
