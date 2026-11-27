@@ -7,6 +7,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageTypes;
 
 @Mod("zonezero_advancements")
 public final class ZoneZeroAdvancements {
@@ -20,9 +22,28 @@ public final class ZoneZeroAdvancements {
     private void onDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             increment(player, DEATHS_KEY);
+            var source = event.getSource();
+            if (source.getEntity() instanceof Zombie) record(player, "zombie_death", 1, 500);
+            if (source.getEntity() instanceof ServerPlayer) record(player, "player_death", 1);
+            if (source.is(DamageTypeTags.IS_FALL)) record(player, "fall_death", 1);
+            if (source.is(DamageTypes.DROWN)) record(player, "drown_death", 1);
+            if (source.is(DamageTypeTags.IS_FIRE)) record(player, "fire_death", 1);
         }
         if (event.getEntity() instanceof Zombie && event.getSource().getEntity() instanceof ServerPlayer killer) {
             increment(killer, KILLS_KEY);
+            if (event.getSource().is(DamageTypes.PLAYER_ATTACK)) {
+                if (killer.getMainHandItem().isEmpty()) record(killer, "unarmed_zombie_kill", 1);
+                else record(killer, "melee_zombie_kill", 1000);
+            }
+            if (killer.getHealth() <= 2.0F) record(killer, "low_health_zombie_kill", 1);
+        }
+    }
+    private void record(ServerPlayer player, String event, int... thresholds) {
+        String key = "zonezero_advancements_hidden_" + event;
+        increment(player, key);
+        int count = player.getPersistentData().getCompound("PlayerPersisted").getInt(key);
+        for (int threshold : thresholds) {
+            if (count >= threshold) award(player, "hidden/" + event + "/" + threshold);
         }
     }
     private void increment(ServerPlayer player, String key) {
