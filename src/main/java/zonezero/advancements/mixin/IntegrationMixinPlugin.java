@@ -30,6 +30,10 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
         // classes; let Mixin resolve the target and check the exact injectors.
         if (mixin.endsWith(".ConcreteBreakMixin"))
             return target.equals("net.minecraft.server.level.ServerPlayerGameMode");
+        if (mixin.endsWith(".AdvancementLayoutMixin"))
+            return target.equals("net.minecraft.server.ServerAdvancementManager");
+        if (mixin.endsWith(".CompactWidgetMixin"))
+            return target.equals("net.minecraft.client.gui.screens.advancements.AdvancementWidget");
         try {
             ClassNode node=MixinService.getService().getBytecodeProvider().getClassNode(target,false);
             boolean match=matches(node,mixin);

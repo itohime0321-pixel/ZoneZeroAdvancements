@@ -106,3 +106,27 @@ with zipfile.ZipFile(root/'build/distributions/ZoneZeroAdvancements-Icons.zip') 
 assert len(palette)<=32, f'Shared palette has {len(palette)} entries (including transparency)'
 print(f'Palette: {len(palette)-1} opaque colors + transparency.')
 print('PASS: 202 achievements, 46 hidden, no duplicate names/descriptions, 100 kill thresholds, 7 zones, 203 linked 32x32 PNGs (202 achievements + root), max 32 shared colors.')
+
+# Every real relationship is adjacent, and no independent achievement is
+# attached to another independent achievement for visual purposes.
+layout={}
+for line in (root/'build/generated/advancements/zonezero_advancements_layout.properties').read_text().splitlines():
+ key,xy=line.split('=')
+ layout[key]=tuple(map(int,xy.split(',')))
+assert set(layout)==set(files) and len(set(layout.values()))==203
+assert layout['root']==(0,0)
+assert max(x for x,y in layout.values())<=16 and max(y for x,y in layout.values())<=15
+assert all(files[f'exploration/{n}']['parent']=='zonezero_advancements:root' for n in range(1,8))
+for key,f in files.items():
+ parent=f.get('parent','').split(':')[-1]
+ if not parent or parent=='root': continue
+ x,y=layout[key]
+ a,b=layout[parent]
+ assert abs(x-a)+abs(y-b)==1,(key,parent,layout[key],layout[parent])
+ assert key.rsplit('/',1)[0]==parent.rsplit('/',1)[0], (key,parent)
+for key in ['unarmed_zombie_kill','revive_other','alcohol','shelter_teleport']:
+ nodes=sorted((k for k in files if k.startswith('hidden/'+key+'/')),key=lambda k:int(k.rsplit('/',1)[1]))
+ assert len(nodes)>=2
+ for before,after in zip(nodes,nodes[1:]):
+  assert files[after]['parent']=='zonezero_advancements:'+before
+print('PASS: compact grid, unique coordinates, adjacent milestone chains, independent exploration and hidden feats.')

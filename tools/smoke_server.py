@@ -97,6 +97,9 @@ with LOG.open('wb') as out:
         if 'ZoneZero: concrete-break hook applied.' not in text():
             raise AssertionError('Concrete block-removal mixin did not apply')
         print('PASS: concrete-break hook actually applied on NeoForge.',flush=True)
+        if 'ZoneZero test: verified all 203 unique compact positions.' not in text():
+            raise AssertionError('Compact layout was not actually applied to all loaded advancement definitions')
+        print('PASS: actual server applied all 203 compact coordinates.',flush=True)
         # The test-only server posts two visible completed events, plus root,
         # another namespace and a repeat while announceAdvancements is false.
         # Only two chat announcements should appear, each with its full description.
@@ -117,6 +120,13 @@ with LOG.open('wb') as out:
         print('Enabled data packs:',packs,flush=True)
         if 'zonezero' not in packs.lower() and 'mod' not in packs.lower():
             raise AssertionError('Expected mod datapack not listed')
+        before=text().count('ZoneZero: applied compact coordinates to 203 nodes.')
+        rcon('reload')
+        deadline=time.monotonic()+60
+        while text().count('ZoneZero: applied compact coordinates to 203 nodes.')<=before:
+            if time.monotonic()>=deadline:raise AssertionError('Compact layout missing after datapack reload')
+            time.sleep(1)
+        print('PASS: compact positions also applied after datapack reload.',flush=True)
         rcon('stop',shutdown=True)
         if proc.wait(timeout=90)!=0:raise RuntimeError('Gradle server run returned an error')
         log=text()

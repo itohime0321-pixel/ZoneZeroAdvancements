@@ -83,6 +83,8 @@ public final class ZoneZeroAdvancements {
         LogUtils.getLogger().info("ZoneZero: loaded {} advancement definitions (including root).",count);
         if (manager.get(id("root"))==null)
             LogUtils.getLogger().warn("ZoneZero: root advancement is missing; inspect data pack loading.");
+        if (Boolean.getBoolean("zonezero.verifyCompactLayout"))
+            CompactAdvancementLayout.verify(manager.getAllAdvancements());
         if (Boolean.getBoolean("zonezero.verifyChatAnnouncements"))
             verifyChatAnnouncements(event.getServer());
     }

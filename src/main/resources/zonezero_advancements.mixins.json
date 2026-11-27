@@ -4,6 +4,19 @@
   "package": "zonezero.advancements.mixin",
   "plugin": "zonezero.advancements.mixin.IntegrationMixinPlugin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["ConcreteBreakMixin", "PersonalShelterMixin", "TeleportStoneMixin", "MedicineFunctionMixin", "BleedOutMixin", "BleedOutReviveDataAccessor"],
-  "injectors": {"defaultRequire": 0}
+  "mixins": [
+    "ConcreteBreakMixin",
+    "PersonalShelterMixin",
+    "TeleportStoneMixin",
+    "MedicineFunctionMixin",
+    "BleedOutMixin",
+    "BleedOutReviveDataAccessor",
+    "AdvancementLayoutMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  },
+  "client": [
+    "CompactWidgetMixin"
+  ]
 }

@@ -15,6 +15,7 @@ neoForge {
             jvmArgument('-Xmx2G')
             jvmArgument('-Dzonezero.verifyConcreteHook=true')
             jvmArgument('-Dzonezero.verifyChatAnnouncements=true')
+            jvmArgument('-Dzonezero.verifyCompactLayout=true')
         }
     }
     mods {

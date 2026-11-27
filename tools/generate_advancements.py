@@ -48,9 +48,15 @@ for key,thresholds,names,desc,icon in series:
  all_titles.extend(names)
  for i,(n,t) in enumerate(zip(thresholds,names)):
   condition={'genetics':f'新投入 {n} 點基因技能點。','guns':f'新投入 {n} 點槍械技能點。','exploration':f'探索玩家可見的第 {n} 區。','economy':f'新增持有相當於 {n} 個瓶蓋的財產。'}[key]
-  node(key+'/'+str(n),t,flavor[key][i]+'\n'+condition,icon,'root' if i==0 else key+'/'+str(thresholds[i-1]),challenge=i==len(names)-1)
+  node(key+'/'+str(n),t,flavor[key][i]+'\n'+condition,icon,'root' if i==0 or key=='exploration' else key+'/'+str(thresholds[i-1]),challenge=i==len(names)-1)
 assert len(all_titles)==len(set(all_titles))
 hidden=json.loads((root/'design/hidden.json').read_text(encoding='utf-8'))['hidden']
+# Only increasing thresholds for the same counter have a real chain.
+hidden_groups={}
+for h in hidden:
+ if h['event']!='deaths': hidden_groups.setdefault(h['event'],[]).append(h['threshold'])
+for values in hidden_groups.values(): values.sort()
+
 def hidden_condition(key,n):
  conditions={
   'revived':'首次成功被其他玩家救起。',
@@ -90,9 +96,37 @@ for index,h in enumerate(hidden):
  n=h['threshold']
  all_titles.append(h['title'])
  desc=h['description'] if 'description' in h else hidden_flavor[index]+'\n'+hidden_condition(key,n)
- node('hidden/'+key+'/'+str(n),h['title'],desc,'minecraft:echo_shard','root',True,False)
+ thresholds=hidden_groups[key]
+ index_in_chain=thresholds.index(n)
+ parent='root' if index_in_chain==0 else 'hidden/'+key+'/'+str(thresholds[index_in_chain-1])
+ node('hidden/'+key+'/'+str(n),h['title'],desc,'minecraft:echo_shard',parent,True,False)
 assert len(all_titles)==202
 assert len(all_titles)==len(set(all_titles))
 assert len(list(out.rglob('*.json')))==203
 print('Generated 202 achievements and one root.')
 
+
+# Fixed slot coordinates in vanilla advancement-grid units (28 x 27 px).
+# The server publishes these after vanilla's tree layout. Snake rows keep
+# all sequential connections adjacent without placing a 100-node line.
+layout={'root':(0,0)}
+def snake(ids,x,y,width):
+ for i,path in enumerate(ids):
+  row,col=divmod(i,width)
+  layout[path]=(x+(col if row%2==0 else width-1-col),y+row)
+snake(['zombie/'+str(z['count']) for z in data['zombies']],0,1,10)
+snake(['death/'+str(n) for n in data['deaths']],11,1,6)
+layout['death/486']=(10,3) # optional side branch, adjacent to death/450
+snake(['genetics/'+str(n) for n in data['genetics']['thresholds']],11,6,6)
+snake(['guns/'+str(n) for n in data['guns']['thresholds']],11,7,6)
+snake(['economy/'+str(n) for n in data['economy']['thresholds']],11,10,6)
+snake(['exploration/'+str(n) for n in range(1,8)],0,12,17)
+# Group repeated hidden counters in consecutive slots, then unique feats.
+ordered_hidden=[f'hidden/{key}/{n}' for key,values in sorted(hidden_groups.items(),key=lambda item:(len(item[1])==1,item[0])) for n in values]
+snake(ordered_hidden,0,13,17)
+assert set(layout)==set(icons)
+assert len(set(layout.values()))==len(layout)
+# Resource outside the data pack namespace; loaded by server mixin once.
+layout_file=root/'build/generated/advancements/zonezero_advancements_layout.properties'
+layout_file.write_text(''.join(f'{path}={x},{y}\n' for path,(x,y) in sorted(layout.items())),encoding='ascii')
+print('Generated compact 17-column grid for all 203 definitions.')
