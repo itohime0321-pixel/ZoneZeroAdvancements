@@ -3,7 +3,7 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.78'
 }
 group = 'zonezero'
-version = '0.1.0'
+version = '0.2.0'
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = '21.1.172'
@@ -11,7 +11,23 @@ neoForge {
         zonezero_advancements { sourceSet sourceSets.main }
     }
 }
+def python = providers.environmentVariable('PYTHON').orElse('python')
+sourceSets.main.resources.srcDir(layout.buildDirectory.dir('generated/advancements'))
 tasks.register('generateAdvancements', Exec) {
-    commandLine 'python', 'tools/generate_advancements.py'
+    inputs.files('tools/generate_advancements.py', 'design/milestones.json', 'design/hidden.json', 'art/icon_manifest.json')
+    outputs.dir(layout.buildDirectory.dir('generated/advancements'))
+    commandLine python.get(), 'tools/generate_advancements.py'
 }
 tasks.named('processResources') { dependsOn 'generateAdvancements' }
+tasks.register('buildIconPack', Exec) {
+    inputs.files('tools/build_resource_pack.py', 'art/icon_manifest.json')
+    inputs.dir('art/icons')
+    outputs.file(layout.buildDirectory.file('distributions/ZoneZeroAdvancements-Icons-Batch01.zip'))
+    commandLine python.get(), 'tools/build_resource_pack.py'
+}
+tasks.register('validateAdvancements', Exec) {
+    dependsOn 'generateAdvancements', 'buildIconPack'
+    commandLine python.get(), 'tools/validate_advancements.py'
+}
+tasks.named('check') { dependsOn 'validateAdvancements' }
+tasks.named('assemble') { dependsOn 'buildIconPack' }

@@ -1,0 +1,41 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "meds_and_herbs:medicine",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:plantago_dressing",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:wool_dressing",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:cotton_dressing",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:splint",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:plaster",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:sewing_kit",
+      "required": false
+    },
+    {
+      "id": "meds_and_herbs:syringe",
+      "required": false
+    },
+    {
+      "id": "lrtactical:ibuprofen",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "death/1": {
+    "model_data": 772000,
+    "texture": "art/icons/death/1.png"
+  },
+  "death/10": {
+    "model_data": 772001,
+    "texture": "art/icons/death/10.png"
+  },
+  "death/30": {
+    "model_data": 772002,
+    "texture": "art/icons/death/30.png"
+  },
+  "death/50": {
+    "model_data": 772003,
+    "texture": "art/icons/death/50.png"
+  },
+  "death/75": {
+    "model_data": 772004,
+    "texture": "art/icons/death/75.png"
+  },
+  "death/100": {
+    "model_data": 772005,
+    "texture": "art/icons/death/100.png"
+  },
+  "death/150": {
+    "model_data": 772006,
+    "texture": "art/icons/death/150.png"
+  },
+  "death/200": {
+    "model_data": 772007,
+    "texture": "art/icons/death/200.png"
+  },
+  "death/250": {
+    "model_data": 772008,
+    "texture": "art/icons/death/250.png"
+  },
+  "death/300": {
+    "model_data": 772009,
+    "texture": "art/icons/death/300.png"
+  },
+  "death/350": {
+    "model_data": 772010,
+    "texture": "art/icons/death/350.png"
+  },
+  "death/400": {
+    "model_data": 772011,
+    "texture": "art/icons/death/400.png"
+  },
+  "death/450": {
+    "model_data": 772012,
+    "texture": "art/icons/death/450.png"
+  },
+  "death/486": {
+    "model_data": 772013,
+    "texture": "art/icons/death/486.png"
+  },
+  "death/500": {
+    "model_data": 772014,
+    "texture": "art/icons/death/500.png"
+  },
+  "death/550": {
+    "model_data": 772015,
+    "texture": "art/icons/death/550.png"
+  },
+  "death/600": {
+    "model_data": 772016,
+    "texture": "art/icons/death/600.png"
+  },
+  "death/650": {
+    "model_data": 772017,
+    "texture": "art/icons/death/650.png"
+  },
+  "death/700": {
+    "model_data": 772018,
+    "texture": "art/icons/death/700.png"
+  },
+  "death/750": {
+    "model_data": 772019,
+    "texture": "art/icons/death/750.png"
+  }
+}

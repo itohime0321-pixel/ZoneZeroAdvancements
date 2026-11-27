@@ -1,5 +1,5 @@
 {
-  "status": "design_pending_runtime_integration",
+  "status": "runtime_and_integration_in_progress",
   "art": {
     "width": 32,
     "height": 32,
@@ -157,7 +157,7 @@
     },
     {
       "title": "不可能的任務",
-      "event": "zone14_zombie_kill",
+      "event": "zone7_zombie_kill",
       "threshold": 1000,
       "hidden": true
     },
