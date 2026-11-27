@@ -58,6 +58,16 @@ public final class ZoneZeroAdvancements {
         var data = player.getPersistentData().getCompound("PlayerPersisted");
         int deaths = data.getInt(DEATHS_KEY);
         int kills = data.getInt(KILLS_KEY);
+        long caps = 0;
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            var stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).equals(ResourceLocation.fromNamespaceAndPath("kubejs", "bottle_cap"))) {
+                caps += stack.getCount();
+            }
+        }
+        for (int threshold : new int[]{1,100,500,1000,5000,10000,50000,100000}) {
+            if (caps >= threshold) award(player, "economy/" + threshold);
+        }
         for (int threshold : DEATHS) {
             if (deaths < threshold) break;
             award(player, "death/" + threshold);
