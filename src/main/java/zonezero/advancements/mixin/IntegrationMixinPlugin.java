@@ -25,6 +25,11 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
             LOG.log(System.Logger.Level.INFO,"ZoneZero: concrete-break hook applied.");
     }
     @Override public boolean shouldApplyMixin(String target,String mixin) {
+        // This is a required vanilla/NeoForge class, not an optional mod. At this
+        // early lifecycle stage the bytecode provider cannot resolve vanilla
+        // classes; let Mixin resolve the target and check the exact injectors.
+        if (mixin.endsWith(".ConcreteBreakMixin"))
+            return target.equals("net.minecraft.server.level.ServerPlayerGameMode");
         try {
             ClassNode node=MixinService.getService().getBytecodeProvider().getClassNode(target,false);
             boolean match=matches(node,mixin);
@@ -57,13 +62,6 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
         return insn;
     }
     public static boolean matches(ClassNode node,String mixin) {
-        if (mixin.endsWith(".ConcreteBreakMixin")) {
-            return field(node,"player","Lnet/minecraft/server/level/ServerPlayer;",false)
-                    && node.methods.stream().anyMatch(m->m.name.equals("destroyBlock")
-                        && m.desc.equals("(Lnet/minecraft/core/BlockPos;)Z"))
-                    && node.methods.stream().anyMatch(m->m.name.equals("removeBlock")
-                        && m.desc.equals("(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Z"));
-        }
         if (mixin.endsWith(".PersonalShelterMixin")) {
             MethodNode m=method(node,"createPersonalDimension","(Lnet/minecraft/server/level/ServerPlayer;Lcom/ruadou/personaldimension/dimension/DimensionPreset;Lcom/ruadou/personaldimension/dimension/template/DimensionTemplate;)Z");
             if (m==null) return false;
