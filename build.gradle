@@ -31,3 +31,10 @@ tasks.register('validateAdvancements', Exec) {
 }
 tasks.named('check') { dependsOn 'validateAdvancements' }
 tasks.named('assemble') { dependsOn 'buildIconPack' }
+
+tasks.register('verifyZoneRules', JavaExec) {
+    dependsOn 'testClasses'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'zonezero.advancements.ZoneRulesTest'
+}
+tasks.named('check') { dependsOn 'verifyZoneRules' }

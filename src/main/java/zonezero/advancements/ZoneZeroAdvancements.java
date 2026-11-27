@@ -52,13 +52,14 @@ public final class ZoneZeroAdvancements {
     private static final Map<UUID,Long> SESSIONS=new HashMap<>();
     private static final Map<UUID,Pair> LAST_KILLS=new HashMap<>(), LAST_DEATHS=new HashMap<>();
     private record Pair(UUID other,long tick) {}
-    private static int boxValue;
+    private static int boxValue=50;
     public ZoneZeroAdvancements() {
         loadConfiguration();
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onDeath);
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onPlace);
         NeoForge.EVENT_BUS.addListener(this::onFinishUse);
-        NeoForge.EVENT_BUS.addListener(this::onLogin);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onLogin);
+        NeoForge.EVENT_BUS.addListener(this::onClone);
         NeoForge.EVENT_BUS.addListener(this::onLogout);
         NeoForge.EVENT_BUS.addListener(this::onTick);
     }
@@ -68,9 +69,9 @@ public final class ZoneZeroAdvancements {
         Properties p=new Properties();
         try {
             Files.createDirectories(path.getParent());
-            if (!Files.exists(path)) Files.writeString(path,"# Set to the verified number of bottle caps per box. 0 disables box conversion.\nbottleCapBoxValue=0\n");
+            if (!Files.exists(path)) Files.writeString(path,"# Zone Zero economy: 1 box = 50 bottle caps. 0 disables box conversion.\nbottleCapBoxValue=50\n");
             try (var in=Files.newInputStream(path)) {p.load(in);}
-            boxValue=Math.max(0,Integer.parseInt(p.getProperty("bottleCapBoxValue","0")));
+            boxValue=Math.max(0,Integer.parseInt(p.getProperty("bottleCapBoxValue","50")));
         } catch (IOException|NumberFormatException e) {
             boxValue=0;
             LogUtils.getLogger().warn("ZoneZero: invalid achievement configuration; bottle cap boxes ignored.",e);
@@ -109,6 +110,16 @@ public final class ZoneZeroAdvancements {
         LAST_POSITION.put(p.getUUID(),new double[]{p.getX(),p.getZ(),zone(p)});
         restoreAwards(p);
         settle(p);
+    }
+    private void onClone(PlayerEvent.Clone event) {
+        if (!(event.getEntity() instanceof ServerPlayer target)) return;
+        var original=event.getOriginal().getPersistentData();
+        if (!original.contains(PERSISTED)) return;
+        var source=original.getCompound(PERSISTED);
+        if (!source.contains(DATA)) return;
+        var root=target.getPersistentData();
+        if (!root.contains(PERSISTED)) root.put(PERSISTED,new CompoundTag());
+        root.getCompound(PERSISTED).put(DATA,source.getCompound(DATA).copy());
     }
     private void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         UUID uuid=event.getEntity().getUUID();
