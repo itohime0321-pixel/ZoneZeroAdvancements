@@ -160,7 +160,7 @@ public final class ZoneZeroAdvancements {
                 if (p.getMainHandItem().isEmpty()) record(p,"unarmed_zombie_kill",1);
                 else if (p.getMainHandItem().is(MELEE)) record(p,"melee_zombie_kill",1000);
             }
-            if (p.getHealth()<2.0F) record(p,"low_health_zombie_kill",1);
+            if (p.getHealth()<=2.0F) record(p,"low_health_zombie_kill",1);
             if (zone(victim)==7 && zone(p)==7) record(p,"zone7_zombie_kill",1000);
         }
     }
@@ -235,6 +235,13 @@ public final class ZoneZeroAdvancements {
         milestones(p,"death",d.getInt("deaths"),ZoneRules.DEATHS);
         int kills=d.getInt("zombie_kills");
         for(int n=100;n<=Math.min(kills,10000);n+=100) award(p,"zombie/"+n);
+        Map<String,int[]> recovery=new HashMap<>(EXTERNAL);
+        recovery.put("zombie_death",new int[]{500});
+        for(String key:List.of("centipede_death","player_death","fall_death","drown_death","fire_death","unarmed_zombie_kill","low_health_zombie_kill")) recovery.put(key,new int[]{1});
+        recovery.put("melee_zombie_kill",new int[]{1000});
+        recovery.put("zone7_zombie_kill",new int[]{1000});
+        recovery.put("alcohol",new int[]{1,100});
+        recovery.forEach((key,thresholds)->{int count=d.getInt("hidden_"+key);for(int n:thresholds) if(count>=n) award(p,"hidden/"+key+"/"+n);});
     }
     private static int checkSkill(ServerPlayer p,String path,String namespace,String category,int[] thresholds) {
         Integer actual=SkillsBridge.spent(p,namespace,category);
