@@ -31,7 +31,7 @@
     },
     {
       "title": "你不要過來啊！",
-      "event": "zombie_death",
+      "event": "centipede_death",
       "threshold": 1,
       "hidden": true
     },
