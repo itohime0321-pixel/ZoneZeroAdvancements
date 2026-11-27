@@ -15,8 +15,11 @@ def node(name,title,desc,item,parent=None,hidden=False,challenge=False):
   d['criteria']['milestone']['trigger']='minecraft:tick'
  write(name,d)
 node('root','零號禁區','在廢土中寫下你的故事。','minecraft:compass')
-titles='初見殺|死亡回歸|某個人的日常|你已經死了|今天也是個死去的好日子|死神的老朋友|無限月讀|明日邊界|死亡擱淺|三百壯士，只有你|不死者的詛咒|亞人|死亡輪迴|半千次的告別|命運石之門|死侍|死神拒收|人類補完計畫|不滅的靈魂|緊急撤退|死亡專業戶|向死亡獻上祝福|最後一次，真的|死亡之神'.split('|')
+titles='初見殺|死亡回歸|某個人的日常|笑死，真的死了|我就爛|死神的老朋友|無限月讀|明日邊界|死亡擱淺|三百壯士，只有你|不死者的詛咒|亞人|死亡輪迴|半千次的告別|命運石之門|死侍|死神拒收|人類補完計畫|不滅的靈魂|緊急撤退|死亡專業戶|向死亡獻上祝福|最後一次，真的|死亡之神'.split('|')
 assert len(titles)==len(data['deaths'])
+memes={300:'你各位啊',2100:'這很不科學',3900:'這不是肯德基',5600:'我全都要',7300:'蛤？還有喔？',8700:'這個我不能接受'}
+for z in data['zombies']:
+ if z['count'] in memes: z['title']=memes[z['count']]
 all_titles=titles+[x['title'] for x in data['zombies']]+['Re：486']
 assert len(all_titles)==len(set(all_titles))
 for i,(n,t) in enumerate(zip(data['deaths'],titles)):
@@ -25,4 +28,17 @@ node('death/486','Re：486','無論重來多少次，我都會抵達那個未曾
 for i,z in enumerate(data['zombies']):
  n=z['count']
  node('zombie/'+str(n),z['title'],'累計討伐 '+str(n)+' 隻殭屍。','minecraft:rotten_flesh','root' if i==0 else 'zombie/'+str(n-100),challenge=n%1000==0)
-print('Generated 126 advancement definitions (including root).')
+series=[
+ ('genetics',data['genetics']['thresholds'],'人類進化的第一步|我不做人啦！|感染者的未來|超級士兵計畫|生命的奇蹟|零號生命體','投入基因技能點','minecraft:ghast_tear'),
+ ('guns',data['guns']['thresholds'],'我需要一把槍|槍之勇者|薩科塔的天賦|這就是我的槍道|專業人士|戰爭機器|企鵝物流|槍之惡魔|傳奇傭兵|人形兵器|零號戰爭兵器','投入槍械技能點','minecraft:crossbow'),
+ ('exploration',list(range(1,15)),'初入禁區|離開舒適圈|潛行者|地鐵：最後曙光|無人之境|來自深淵|深入敵後|死亡之地|寂靜之丘|地獄的入口|人類禁足之地|薩米的深處|有去無回|零號禁區的盡頭','抵達禁區第','minecraft:map'),
+ ('economy',[1,100,500,1000,5000,10000,50000,100000],'戰爭，戰爭從未改變|廢土拾荒者|有錢能使鬼推磨|廢土商人|資本主義的勝利|瓶蓋大亨|財富自由|廢土華爾街','持有瓶蓋','minecraft:gold_nugget')
+]
+for key,thresholds,names,desc,icon in series:
+ names=names.split('|')
+ assert len(names)==len(thresholds)
+ all_titles.extend(names)
+ for i,(n,t) in enumerate(zip(thresholds,names)):
+  node(key+'/'+str(n),t,desc+' '+str(n)+(' 區。' if key=='exploration' else '。'),icon,'root' if i==0 else key+'/'+str(thresholds[i-1]),challenge=i==len(names)-1)
+assert len(all_titles)==len(set(all_titles))
+print('Generated 165 advancement definitions (including root).')
