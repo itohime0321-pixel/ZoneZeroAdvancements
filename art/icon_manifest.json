@@ -558,5 +558,85 @@
   "zombie/4600": {
     "model_data": 772139,
     "texture": "art/icons/zombie/4600.png"
+  },
+  "zombie/4700": {
+    "model_data": 772140,
+    "texture": "art/icons/zombie/4700.png"
+  },
+  "zombie/4800": {
+    "model_data": 772141,
+    "texture": "art/icons/zombie/4800.png"
+  },
+  "zombie/4900": {
+    "model_data": 772142,
+    "texture": "art/icons/zombie/4900.png"
+  },
+  "zombie/5000": {
+    "model_data": 772143,
+    "texture": "art/icons/zombie/5000.png"
+  },
+  "zombie/5100": {
+    "model_data": 772144,
+    "texture": "art/icons/zombie/5100.png"
+  },
+  "zombie/5200": {
+    "model_data": 772145,
+    "texture": "art/icons/zombie/5200.png"
+  },
+  "zombie/5300": {
+    "model_data": 772146,
+    "texture": "art/icons/zombie/5300.png"
+  },
+  "zombie/5400": {
+    "model_data": 772147,
+    "texture": "art/icons/zombie/5400.png"
+  },
+  "zombie/5500": {
+    "model_data": 772148,
+    "texture": "art/icons/zombie/5500.png"
+  },
+  "zombie/5600": {
+    "model_data": 772149,
+    "texture": "art/icons/zombie/5600.png"
+  },
+  "zombie/5700": {
+    "model_data": 772150,
+    "texture": "art/icons/zombie/5700.png"
+  },
+  "zombie/5800": {
+    "model_data": 772151,
+    "texture": "art/icons/zombie/5800.png"
+  },
+  "zombie/5900": {
+    "model_data": 772152,
+    "texture": "art/icons/zombie/5900.png"
+  },
+  "zombie/6000": {
+    "model_data": 772153,
+    "texture": "art/icons/zombie/6000.png"
+  },
+  "zombie/6100": {
+    "model_data": 772154,
+    "texture": "art/icons/zombie/6100.png"
+  },
+  "zombie/6200": {
+    "model_data": 772155,
+    "texture": "art/icons/zombie/6200.png"
+  },
+  "zombie/6300": {
+    "model_data": 772156,
+    "texture": "art/icons/zombie/6300.png"
+  },
+  "zombie/6400": {
+    "model_data": 772157,
+    "texture": "art/icons/zombie/6400.png"
+  },
+  "zombie/6500": {
+    "model_data": 772158,
+    "texture": "art/icons/zombie/6500.png"
+  },
+  "zombie/6600": {
+    "model_data": 772159,
+    "texture": "art/icons/zombie/6600.png"
   }
 }
