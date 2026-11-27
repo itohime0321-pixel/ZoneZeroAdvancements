@@ -1,0 +1,204 @@
+{
+  "status": "design_pending_runtime_integration",
+  "art": {
+    "width": 32,
+    "height": 32,
+    "maxColors": 32,
+    "transparent": true,
+    "text": false
+  },
+  "deathTitleOverrides": {
+    "30": "某個人的日常"
+  },
+  "hidden": [
+    {
+      "title": "我還不能死",
+      "event": "revived",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "羅德島的意志",
+      "event": "revive_other",
+      "threshold": 100,
+      "hidden": true
+    },
+    {
+      "title": "不要停下來啊！",
+      "event": "downed_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "你不要過來啊！",
+      "event": "zombie_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "同歸於盡",
+      "event": "mutual_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "友軍傷害",
+      "event": "player_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "信仰之躍",
+      "event": "fall_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "水之呼吸",
+      "event": "drown_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "炎拳",
+      "event": "fire_death",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "一拳超人",
+      "event": "unarmed_zombie_kill",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "一發入魂",
+      "event": "gun_headshot_kill",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "刀劍神域",
+      "event": "melee_zombie_kill",
+      "threshold": 1000,
+      "hidden": true
+    },
+    {
+      "title": "乖乖聽話",
+      "event": "guai_place",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "科學的力量",
+      "event": "guai_varieties",
+      "threshold": 6,
+      "hidden": true
+    },
+    {
+      "title": "我的世界，我的規則",
+      "event": "shelter_create",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "回家的路",
+      "event": "shelter_teleport",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "深夜食堂",
+      "event": "midnight_food",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "乾杯！",
+      "event": "alcohol",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "酒鬼的日常",
+      "event": "alcohol",
+      "threshold": 100,
+      "hidden": true
+    },
+    {
+      "title": "藥不能亂吃",
+      "event": "herb_thrombosis",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "終於可以退休了",
+      "event": "both_trees_full",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "醫療部的常客",
+      "event": "medical_use",
+      "threshold": 1000,
+      "hidden": true
+    },
+    {
+      "title": "你還有理智嗎？",
+      "event": "session_hours",
+      "threshold": 8,
+      "hidden": true
+    },
+    {
+      "title": "這不是撤退",
+      "event": "low_health_teleport",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "不可能的任務",
+      "event": "zone14_zombie_kill",
+      "threshold": 1000,
+      "hidden": true
+    },
+    {
+      "title": "我們是同伴",
+      "event": "revive_other",
+      "threshold": 500,
+      "hidden": true
+    },
+    {
+      "title": "大難不死",
+      "event": "low_health_zombie_kill",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "和平主義者",
+      "event": "peaceful_game_day",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "整合運動",
+      "event": "zombie_death",
+      "threshold": 500,
+      "hidden": true
+    },
+    {
+      "title": "人類的讚歌",
+      "event": "core_complete",
+      "threshold": 1,
+      "hidden": true
+    },
+    {
+      "title": "Re：486",
+      "event": "deaths",
+      "threshold": 486,
+      "hidden": true,
+      "description": "無論重來多少次，我都會抵達那個未曾見過的明天。",
+      "frame": "challenge",
+      "announce": true
+    }
+  ]
+}
