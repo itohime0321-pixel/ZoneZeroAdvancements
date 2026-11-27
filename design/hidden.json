@@ -279,6 +279,46 @@
       "hidden": true,
       "description": "早點收工是好習慣；它們只是剛好也一起提早下班。\n10 秒（200 遊戲刻）內擊殺 5 隻殭屍。",
       "reference": "Queen"
+    },
+    {
+      "title": "大家可以回家啦！",
+      "event": "barehand_concrete_break",
+      "threshold": 1,
+      "hidden": true,
+      "description": "工程隊全員失業了，醫療隊則收到一整箱新的手部骨折報告。\n生存模式下雙手皆空，成功拆除一個混凝土方塊。",
+      "reference": "港片迷因（使用者指定）"
+    },
+    {
+      "title": "我要打十個！",
+      "event": "unarmed_zombie_kill",
+      "threshold": 10,
+      "hidden": true,
+      "description": "十個一起來也無妨，醫療部的掛號單還有九張。\n累計徒手擊殺 10 隻殭屍。",
+      "reference": "葉問"
+    },
+    {
+      "title": "英雄本色",
+      "event": "revive_other",
+      "threshold": 1,
+      "hidden": true,
+      "description": "風衣與墨鏡都不算標配，把兄弟活著帶回來才算。\n首次成功救起其他倒地玩家。",
+      "reference": "英雄本色"
+    },
+    {
+      "title": "一支穿雲箭",
+      "event": "long_range_arrow_kill",
+      "threshold": 1,
+      "hidden": true,
+      "description": "援軍沒有到場，三十格外的感染者倒是先收到通知了。\n以弓箭或弩箭擊殺距離自己至少 30 格的殭屍。",
+      "reference": "功夫"
+    },
+    {
+      "title": "無間道",
+      "event": "zombie_villager_kill",
+      "threshold": 1,
+      "hidden": true,
+      "description": "身份查清了，原來他以前也是做生意的。可惜現在只肯收腦袋。\n首次擊殺殭屍村民。",
+      "reference": "無間道"
     }
   ]
 }

@@ -43,6 +43,16 @@ public final class ZoneRulesTest {
         if (!ZoneRules.confirmedRevive(true,false,true,true) || ZoneRules.confirmedRevive(false,false,true,true)
                 || ZoneRules.confirmedRevive(true,true,true,true) || ZoneRules.confirmedRevive(true,false,false,true)
                 || ZoneRules.confirmedRevive(true,false,true,false)) throw new AssertionError("revive success/failure");
-        System.out.println("PASS: seven radial boundaries and fresh skill point baselines, full moon nights and rolling bursts, confirmed headshots and completed rescues");
+        if (!ZoneRules.concreteBreak(true,true,true,true,true,false)) throw new AssertionError("successful empty-hand concrete break");
+        for (int i=0;i<6;i++) {
+            boolean[] v={true,true,true,true,true,false};
+            v[i]=!v[i];
+            if (ZoneRules.concreteBreak(v[0],v[1],v[2],v[3],v[4],v[5]))
+                throw new AssertionError("concrete false positive "+i);
+        }
+        if (ZoneRules.longRangeArrow(29.999*29.999) || !ZoneRules.longRangeArrow(900)
+                || !ZoneRules.longRangeArrow(2500) || ZoneRules.longRangeArrow(Double.NaN))
+            throw new AssertionError("arrow distance boundary");
+        System.out.println("PASS: seven radial boundaries and fresh skill point baselines, full moon nights and rolling bursts, confirmed headshots and completed rescues, empty-hand concrete breaks and arrow distance");
     }
 }

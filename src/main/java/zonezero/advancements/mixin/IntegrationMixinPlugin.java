@@ -20,7 +20,10 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
     @Override public void acceptTargets(Set<String> myTargets,Set<String> otherTargets) {}
     @Override public List<String> getMixins() { return null; }
     @Override public void preApply(String target,ClassNode node,String mixin,IMixinInfo info) {}
-    @Override public void postApply(String target,ClassNode node,String mixin,IMixinInfo info) {}
+    @Override public void postApply(String target,ClassNode node,String mixin,IMixinInfo info) {
+        if (mixin.endsWith(".ConcreteBreakMixin"))
+            LOG.log(System.Logger.Level.INFO,"ZoneZero: concrete-break hook applied.");
+    }
     @Override public boolean shouldApplyMixin(String target,String mixin) {
         try {
             ClassNode node=MixinService.getService().getBytecodeProvider().getClassNode(target,false);
@@ -54,6 +57,13 @@ public final class IntegrationMixinPlugin implements IMixinConfigPlugin {
         return insn;
     }
     public static boolean matches(ClassNode node,String mixin) {
+        if (mixin.endsWith(".ConcreteBreakMixin")) {
+            return field(node,"player","Lnet/minecraft/server/level/ServerPlayer;",false)
+                    && node.methods.stream().anyMatch(m->m.name.equals("destroyBlock")
+                        && m.desc.equals("(Lnet/minecraft/core/BlockPos;)Z"))
+                    && node.methods.stream().anyMatch(m->m.name.equals("removeBlock")
+                        && m.desc.equals("(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Z"));
+        }
         if (mixin.endsWith(".PersonalShelterMixin")) {
             MethodNode m=method(node,"createPersonalDimension","(Lnet/minecraft/server/level/ServerPlayer;Lcom/ruadou/personaldimension/dimension/DimensionPreset;Lcom/ruadou/personaldimension/dimension/template/DimensionTemplate;)Z");
             if (m==null) return false;

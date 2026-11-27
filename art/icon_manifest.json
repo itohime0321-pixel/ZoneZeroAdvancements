@@ -790,5 +790,25 @@
   "hidden/zombie_burst/5": {
     "model_data": 772197,
     "texture": "art/icons/hidden/zombie_burst/5.png"
+  },
+  "hidden/barehand_concrete_break/1": {
+    "model_data": 772198,
+    "texture": "art/icons/hidden/barehand_concrete_break/1.png"
+  },
+  "hidden/unarmed_zombie_kill/10": {
+    "model_data": 772199,
+    "texture": "art/icons/hidden/unarmed_zombie_kill/10.png"
+  },
+  "hidden/revive_other/1": {
+    "model_data": 772200,
+    "texture": "art/icons/hidden/revive_other/1.png"
+  },
+  "hidden/long_range_arrow_kill/1": {
+    "model_data": 772201,
+    "texture": "art/icons/hidden/long_range_arrow_kill/1.png"
+  },
+  "hidden/zombie_villager_kill/1": {
+    "model_data": 772202,
+    "texture": "art/icons/hidden/zombie_villager_kill/1.png"
   }
 }

@@ -13,6 +13,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.SpectralArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -45,7 +47,7 @@ public final class ZoneZeroAdvancements {
     private static final Set<String> GUAI=Set.of("guaiguai:green_guaiguai","guaiguai:yellow_guaiguai","guaiguai:red_guaiguai","guaiguai:blue_guaiguai","guaiguai:purple_guaiguai","guaiguai:black_guaiguai");
     private static final String CAP="kubejs:bottle_cap", BOX="kubejs:bottle_cap_box";
     private static final Map<String,int[]> EXTERNAL=Map.ofEntries(
-        Map.entry("revived",new int[]{1}),Map.entry("revive_other",new int[]{100,500}),
+        Map.entry("revived",new int[]{1}),Map.entry("revive_other",new int[]{1,100,500}),
         Map.entry("downed_death",new int[]{1}),Map.entry("gun_headshot_kill",new int[]{1}),
         Map.entry("shelter_create",new int[]{1}),Map.entry("shelter_teleport",new int[]{1,10}),
         Map.entry("low_health_teleport",new int[]{1}),Map.entry("herb_thrombosis",new int[]{1}),
@@ -68,6 +70,9 @@ public final class ZoneZeroAdvancements {
         NeoForge.EVENT_BUS.addListener(this::onServerStarted);
     }
     private void onServerStarted(ServerStartedEvent event) {
+        // CI boots without a connected player; proactively load the game-mode class for mixin validation.
+        if (Boolean.getBoolean("zonezero.verifyConcreteHook"))
+            LogUtils.getLogger().info("ZoneZero test: loaded {}",net.minecraft.server.level.ServerPlayerGameMode.class.getName());
         var manager=event.getServer().getAdvancements();
         long count=manager.getAllAdvancements().stream().filter(a->MOD.equals(a.id().getNamespace())).count();
         LogUtils.getLogger().info("ZoneZero: loaded {} advancement definitions (including root).",count);
@@ -170,7 +175,12 @@ public final class ZoneZeroAdvancements {
             if (matches(LAST_DEATHS.remove(p.getUUID()),victim,tick)) award(p,"hidden/mutual_death/1");
             else LAST_KILLS.put(p.getUUID(),new Pair(victim.getUUID(),tick));
             if (victim.getType()==EntityType.VILLAGER) record(p,"villager_kill",1);
+            if (victim.getType()==EntityType.ZOMBIE_VILLAGER) award(p,"hidden/zombie_villager_kill/1");
             if (!zombie(victim)) return;
+            if (source.is(DamageTypes.ARROW)
+                    && (source.getDirectEntity() instanceof Arrow || source.getDirectEntity() instanceof SpectralArrow)
+                    && ZoneRules.longRangeArrow(p.distanceToSqr(victim)))
+                award(p,"hidden/long_range_arrow_kill/1");
             record(p,"zombie_survival_streak",50);
             if (victim.isOnFire()) record(p,"burning_zombie_kill",25);
             if (victim.level().dimension().equals(Level.OVERWORLD)) {
@@ -188,7 +198,7 @@ public final class ZoneZeroAdvancements {
             int kills=add(p,"zombie_kills");
             if (kills<=10000 && kills%100==0) award(p,"zombie/"+kills);
             if (source.is(DamageTypes.PLAYER_ATTACK) && source.getDirectEntity()==p) {
-                if (p.getMainHandItem().isEmpty()) record(p,"unarmed_zombie_kill",1,50);
+                if (p.getMainHandItem().isEmpty()) record(p,"unarmed_zombie_kill",1,10,50);
                 else if (p.getMainHandItem().is(MELEE)) record(p,"melee_zombie_kill",1000);
             }
             if (p.getHealth()<2.0F) record(p,"low_health_zombie_kill",1);
@@ -285,6 +295,10 @@ public final class ZoneZeroAdvancements {
         int progress=ZoneRules.newProgress(base,actual);
         milestones(p,path,progress,thresholds);
         return progress;
+    }
+    /** Called only by the server block-removal hook after actual successful destruction. */
+    public static void barehandConcreteBroken(ServerPlayer p) {
+        award(p,"hidden/barehand_concrete_break/1");
     }
     private static void milestones(ServerPlayer p,String path,int count,int[] thresholds) {
         for(int n:thresholds) {if(count<n) break;award(p,path+"/"+n);}

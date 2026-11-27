@@ -91,8 +91,8 @@ for index,h in enumerate(hidden):
  all_titles.append(h['title'])
  desc=h['description'] if 'description' in h else hidden_flavor[index]+'\n'+hidden_condition(key,n)
  node('hidden/'+key+'/'+str(n),h['title'],desc,'minecraft:echo_shard','root',True,False)
-assert len(all_titles)==197
+assert len(all_titles)==202
 assert len(all_titles)==len(set(all_titles))
-assert len(list(out.rglob('*.json')))==198
-print('Generated 197 achievements and one root.')
+assert len(list(out.rglob('*.json')))==203
+print('Generated 202 achievements and one root.')
 

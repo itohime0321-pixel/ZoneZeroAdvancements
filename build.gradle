@@ -13,6 +13,7 @@ neoForge {
             gameDirectory = project.file(providers.gradleProperty('zzSmokeDir').orElse('build/smoke-server').get())
             programArgument('--nogui')
             jvmArgument('-Xmx2G')
+            jvmArgument('-Dzonezero.verifyConcreteHook=true')
         }
     }
     mods {

@@ -42,6 +42,13 @@ public final class ZoneRules {
     public static boolean confirmedRevive(boolean wasDowned,boolean stillDowned,boolean alive,boolean validRescuer) {
         return wasDowned && !stillDowned && alive && validRescuer;
     }
+    public static boolean concreteBreak(boolean survival,boolean emptyMain,boolean emptyOff,boolean concrete,
+                                        boolean removed,boolean stillConcrete) {
+        return survival && emptyMain && emptyOff && concrete && removed && !stillConcrete;
+    }
+    public static boolean longRangeArrow(double distanceSquared) {
+        return Double.isFinite(distanceSquared) && distanceSquared >= 30.0*30.0;
+    }
     public static int newProgress(int initial, int current) {
         return Math.max(0,current - Math.max(0,initial));
     }

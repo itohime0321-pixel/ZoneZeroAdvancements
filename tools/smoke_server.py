@@ -94,6 +94,9 @@ with LOG.open('wb') as out:
                     pass
             time.sleep(1)
         else:raise TimeoutError('Dedicated server did not load all advancement definitions in time')
+        if 'ZoneZero: concrete-break hook applied.' not in text():
+            raise AssertionError('Concrete block-removal mixin did not apply')
+        print('PASS: concrete-break hook actually applied on NeoForge.',flush=True)
         print(f'PASS: actual NeoForge server loaded {EXPECTED} ZoneZero advancement definitions, including root.',flush=True)
         print('RCON list:',result,flush=True)
         packs=rcon('datapack list enabled')
