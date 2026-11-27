@@ -2,6 +2,9 @@ package zonezero.advancements;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +28,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -68,6 +72,7 @@ public final class ZoneZeroAdvancements {
         NeoForge.EVENT_BUS.addListener(this::onTick);
         GunKillBridge.register();
         NeoForge.EVENT_BUS.addListener(this::onServerStarted);
+        NeoForge.EVENT_BUS.addListener(this::onAdvancementEarned);
     }
     private void onServerStarted(ServerStartedEvent event) {
         // CI boots without a connected player; proactively load the game-mode class for mixin validation.
@@ -78,6 +83,56 @@ public final class ZoneZeroAdvancements {
         LogUtils.getLogger().info("ZoneZero: loaded {} advancement definitions (including root).",count);
         if (manager.get(id("root"))==null)
             LogUtils.getLogger().warn("ZoneZero: root advancement is missing; inspect data pack loading.");
+        if (Boolean.getBoolean("zonezero.verifyChatAnnouncements"))
+            verifyChatAnnouncements(event.getServer());
+    }
+    /**
+     * NeoForge fires this event once the advancement requirements become complete,
+     * independent of the display's vanilla announce_to_chat setting.
+     * Access only our own namespace, skip the invisible bootstrap root, and respect
+     * the world gamerule. This also covers an administrator's manual grant.
+     */
+    private void onAdvancementEarned(AdvancementEvent.AdvancementEarnEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer p)) return;
+        AdvancementHolder earned=event.getAdvancement();
+        if (!MOD.equals(earned.id().getNamespace()) || earned.id().getPath().equals("root")) return;
+        var server=p.getServer();
+        if (server==null || !p.level().getGameRules().getBoolean(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)) return;
+        earned.value().display().ifPresent(display -> {
+            // The description already contains the humor line plus the exact condition.
+            // Broadcast as one multiline system-chat entry so it works on unmodded clients.
+            Component message=Component.literal("【零號禁區】").withStyle(ChatFormatting.DARK_AQUA)
+                .append(Component.literal(" ").append(p.getDisplayName()).withStyle(ChatFormatting.WHITE))
+                .append(Component.literal(" 解鎖了成就 ").withStyle(ChatFormatting.GRAY))
+                .append(Component.literal("「").append(display.getTitle().copy()).append("」").withStyle(ChatFormatting.GOLD))
+                .append(Component.literal("\n").append(display.getDescription().copy()).withStyle(ChatFormatting.GRAY));
+            server.getPlayerList().broadcastSystemMessage(message,false);
+        });
+    }
+    /** Strictly opt-in isolated CI: inject earned events, not persistent player awards. */
+    private static void verifyChatAnnouncements(net.minecraft.server.MinecraftServer server) {
+        var fake=net.neoforged.neoforge.common.util.FakePlayerFactory.get(server.overworld(),
+            new com.mojang.authlib.GameProfile(UUID.fromString("a62ab996-8b00-4a7c-9e15-2bf775862161"),"ZZ_Chat_Test"));
+        var manager=server.getAdvancements();
+        var ordinary=Objects.requireNonNull(manager.get(id("death/1")));
+        var hidden=Objects.requireNonNull(manager.get(id("hidden/barehand_concrete_break/1")));
+        var root=Objects.requireNonNull(manager.get(id("root")));
+        var unrelated=Objects.requireNonNull(manager.get(ResourceLocation.fromNamespaceAndPath("minecraft","story/root")));
+        var rule=server.overworld().getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS);
+        boolean previous=rule.get();
+        try {
+            rule.set(true,server);
+            NeoForge.EVENT_BUS.post(new AdvancementEvent.AdvancementEarnEvent(fake,ordinary));
+            NeoForge.EVENT_BUS.post(new AdvancementEvent.AdvancementEarnEvent(fake,hidden));
+            NeoForge.EVENT_BUS.post(new AdvancementEvent.AdvancementEarnEvent(fake,root));
+            NeoForge.EVENT_BUS.post(new AdvancementEvent.AdvancementEarnEvent(fake,unrelated));
+            rule.set(false,server);
+            // If gamerule is ignored this would print a duplicate ordinary announcement.
+            NeoForge.EVENT_BUS.post(new AdvancementEvent.AdvancementEarnEvent(fake,ordinary));
+        } finally {
+            rule.set(previous,server);
+        }
+        LogUtils.getLogger().info("ZoneZero test: sent ordinary, hidden, root, unrelated and muted advancement events.");
     }
     private static ResourceLocation id(String path) {return ResourceLocation.fromNamespaceAndPath(MOD,path);}
     private static void loadConfiguration() {

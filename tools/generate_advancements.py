@@ -11,7 +11,7 @@ def write(name,obj):
  p.parent.mkdir(parents=True,exist_ok=True)
  p.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def node(name,title,desc,item,parent=None,hidden=False,challenge=False):
- d={'display':{'icon':{'id':item},'title':title,'description':desc,'frame':'challenge' if challenge else 'task','show_toast':parent is not None,'announce_to_chat':challenge,'hidden':hidden},'criteria':{'milestone':{'trigger':'minecraft:impossible'}}}
+ d={'display':{'icon':{'id':item},'title':title,'description':desc,'frame':'challenge' if challenge else 'task','show_toast':parent is not None,'announce_to_chat':False,'hidden':hidden},'criteria':{'milestone':{'trigger':'minecraft:impossible'}}}
  if name in icons:
   d['display']['icon']={'id':'minecraft:paper','components':{'minecraft:custom_model_data':icons[name]['model_data']}}
  if parent: d['parent']='zonezero_advancements:'+parent

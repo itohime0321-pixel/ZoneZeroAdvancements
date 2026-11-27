@@ -97,6 +97,18 @@ with LOG.open('wb') as out:
         if 'ZoneZero: concrete-break hook applied.' not in text():
             raise AssertionError('Concrete block-removal mixin did not apply')
         print('PASS: concrete-break hook actually applied on NeoForge.',flush=True)
+        # The test-only server posts two visible completed events, plus root,
+        # another namespace and a repeat while announceAdvancements is false.
+        # Only two chat announcements should appear, each with its full description.
+        log=text()
+        lines=[line for line in log.splitlines() if '【零號禁區】 ZZ_Chat_Test 解鎖了成就' in line]
+        if len(lines)!=2 or not any('「初見殺」' in line for line in lines) or not any('「大家可以回家啦！」' in line for line in lines):
+            raise AssertionError(f'Expected one chat announcement per ordinary/hidden event, found {lines}')
+        for value in ['墓碑負責記錄失敗的草稿','新手教學的最後一課：你會死。','工程隊全員失業了','累計死亡 1 次。','生存模式下雙手皆空，成功拆除一個混凝土方塊。']:
+            # The root description must remain hidden; the two actual descriptions must appear.
+            if (value in log)==(value=='墓碑負責記錄失敗的草稿'):
+                raise AssertionError(f'Unexpected chat description visibility: {value}')
+        print('PASS: ordinary and hidden achievement chat includes title, description and condition; root, other mods and disabled gamerule excluded.',flush=True)
         print(f'PASS: actual NeoForge server loaded {EXPECTED} ZoneZero advancement definitions, including root.',flush=True)
         print('RCON list:',result,flush=True)
         packs=rcon('datapack list enabled')

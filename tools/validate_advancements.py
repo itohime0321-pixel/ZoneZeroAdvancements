@@ -14,6 +14,10 @@ for key,f in files.items():
 assert len({f['display']['description'].splitlines()[0] for k,f in files.items() if k!='root'})==202
 assert sum(f['display']['hidden'] for f in files.values())==46
 for key,v in files.items():
+ # The server sends one custom announcement (title + visible description).
+ # Suppress vanilla's extra copy, while preserving toasts for all actual achievements.
+ assert v['display']['announce_to_chat'] is False,key
+ assert v['display']['show_toast']==(key!='root'),key
  if 'parent' in v: assert v['parent'].split(':',1)[1] in files
  assert v['criteria']['milestone']['trigger']==('minecraft:tick' if key=='root' else 'minecraft:impossible')
 assert {p for p in files if p.startswith('exploration/')}=={f'exploration/{n}' for n in range(1,8)}
