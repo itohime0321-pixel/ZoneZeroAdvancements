@@ -718,5 +718,37 @@
   "zombie/8800": {
     "model_data": 772179,
     "texture": "art/icons/zombie/8800.png"
+  },
+  "zombie/8900": {
+    "model_data": 772180,
+    "texture": "art/icons/zombie/8900.png"
+  },
+  "zombie/9000": {
+    "model_data": 772181,
+    "texture": "art/icons/zombie/9000.png"
+  },
+  "zombie/9200": {
+    "model_data": 772182,
+    "texture": "art/icons/zombie/9200.png"
+  },
+  "zombie/9300": {
+    "model_data": 772183,
+    "texture": "art/icons/zombie/9300.png"
+  },
+  "zombie/9400": {
+    "model_data": 772184,
+    "texture": "art/icons/zombie/9400.png"
+  },
+  "zombie/9500": {
+    "model_data": 772185,
+    "texture": "art/icons/zombie/9500.png"
+  },
+  "zombie/10000": {
+    "model_data": 772186,
+    "texture": "art/icons/zombie/10000.png"
+  },
+  "root": {
+    "model_data": 772187,
+    "texture": "art/icons/root.png"
   }
 }
