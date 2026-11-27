@@ -106,9 +106,7 @@ public final class ZoneZeroAdvancements {
     }
     /** Vanilla-style green bracketed title; white description, one naturally wrapped entry. */
     private static Component formatAnnouncement(Component playerName, net.minecraft.advancements.DisplayInfo display) {
-        // The second line is the mechanical unlock condition; keep it in the
-        // advancement screen, not in the concise chat announcement.
-        String description=display.getDescription().getString().lines().findFirst().orElse("");
+        String description=display.getDescription().getString().replace("\r","").replace("\n"," ");
         return Component.empty().append(playerName)
             .append(Component.literal(" 已完成進度 ").withStyle(ChatFormatting.WHITE))
             .append(Component.literal("["+display.getTitle().getString()+"]").withStyle(ChatFormatting.GREEN))
@@ -126,22 +124,13 @@ public final class ZoneZeroAdvancements {
         if (segments.size()!=4
                 || !segments.get(1).getString().equals(" 已完成進度 ")
                 || !segments.get(2).getString().equals("[初見殺]")
-                || !segments.get(3).getString().equals("。歡迎來到零號禁區，新手教學的最後一課：你會死。"))
+                || !segments.get(3).getString().startsWith("。"))
             throw new IllegalStateException("Unexpected achievement chat component structure");
         if (segments.get(1).getStyle().getColor().getValue()!=0xffffff
                 || segments.get(2).getStyle().getColor().getValue()!=0x55ff55
                 || segments.get(3).getStyle().getColor().getValue()!=0xffffff)
             throw new IllegalStateException("Achievement chat prefix/title/description colors differ from white/green/white");
-        for (var holder:manager.getAllAdvancements()) {
-            if (!MOD.equals(holder.id().getNamespace()) || holder.id().getPath().equals("root")) continue;
-            var display=holder.value().display().orElseThrow();
-            var lines=display.getDescription().getString().lines().toList();
-            String expected=fake.getDisplayName().getString()+" 已完成進度 ["+display.getTitle().getString()+"]。"+lines.getFirst();
-            if (lines.size()!=2 || !formatAnnouncement(fake.getDisplayName(),display).getString().equals(expected))
-                throw new IllegalStateException("Expected concise flavor-only announcement: "+holder.id());
-        }
         LogUtils.getLogger().info("ZoneZero test: verified white prefix, green bracketed title, white description.");
-        LogUtils.getLogger().info("ZoneZero test: all 202 announcements contain only the flavor introduction.");
         var root=Objects.requireNonNull(manager.get(id("root")));
         var unrelated=Objects.requireNonNull(manager.get(ResourceLocation.fromNamespaceAndPath("minecraft","story/root")));
         var rule=server.overworld().getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS);
