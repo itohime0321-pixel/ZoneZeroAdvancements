@@ -318,5 +318,85 @@
   "hidden/melee_zombie_kill/1000": {
     "model_data": 772079,
     "texture": "art/icons/hidden/melee_zombie_kill/1000.png"
+  },
+  "hidden/alcohol/1": {
+    "model_data": 772080,
+    "texture": "art/icons/hidden/alcohol/1.png"
+  },
+  "hidden/alcohol/100": {
+    "model_data": 772081,
+    "texture": "art/icons/hidden/alcohol/100.png"
+  },
+  "hidden/both_trees_full/1": {
+    "model_data": 772082,
+    "texture": "art/icons/hidden/both_trees_full/1.png"
+  },
+  "hidden/core_complete/1": {
+    "model_data": 772083,
+    "texture": "art/icons/hidden/core_complete/1.png"
+  },
+  "hidden/guai_place/1": {
+    "model_data": 772084,
+    "texture": "art/icons/hidden/guai_place/1.png"
+  },
+  "hidden/guai_varieties/6": {
+    "model_data": 772085,
+    "texture": "art/icons/hidden/guai_varieties/6.png"
+  },
+  "hidden/herb_thrombosis/1": {
+    "model_data": 772086,
+    "texture": "art/icons/hidden/herb_thrombosis/1.png"
+  },
+  "hidden/low_health_teleport/1": {
+    "model_data": 772087,
+    "texture": "art/icons/hidden/low_health_teleport/1.png"
+  },
+  "hidden/low_health_zombie_kill/1": {
+    "model_data": 772088,
+    "texture": "art/icons/hidden/low_health_zombie_kill/1.png"
+  },
+  "hidden/medical_use/1000": {
+    "model_data": 772089,
+    "texture": "art/icons/hidden/medical_use/1000.png"
+  },
+  "hidden/midnight_food/1": {
+    "model_data": 772090,
+    "texture": "art/icons/hidden/midnight_food/1.png"
+  },
+  "hidden/peaceful_game_day/1": {
+    "model_data": 772091,
+    "texture": "art/icons/hidden/peaceful_game_day/1.png"
+  },
+  "hidden/session_hours/8": {
+    "model_data": 772092,
+    "texture": "art/icons/hidden/session_hours/8.png"
+  },
+  "hidden/shelter_create/1": {
+    "model_data": 772093,
+    "texture": "art/icons/hidden/shelter_create/1.png"
+  },
+  "hidden/shelter_teleport/1": {
+    "model_data": 772094,
+    "texture": "art/icons/hidden/shelter_teleport/1.png"
+  },
+  "hidden/zombie_death/500": {
+    "model_data": 772095,
+    "texture": "art/icons/hidden/zombie_death/500.png"
+  },
+  "hidden/zone7_zombie_kill/1000": {
+    "model_data": 772096,
+    "texture": "art/icons/hidden/zone7_zombie_kill/1000.png"
+  },
+  "zombie/100": {
+    "model_data": 772097,
+    "texture": "art/icons/zombie/100.png"
+  },
+  "zombie/200": {
+    "model_data": 772098,
+    "texture": "art/icons/zombie/200.png"
+  },
+  "zombie/300": {
+    "model_data": 772099,
+    "texture": "art/icons/zombie/300.png"
   }
 }
