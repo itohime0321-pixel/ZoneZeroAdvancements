@@ -23,7 +23,8 @@ public final class ZoneZeroAdvancements {
         if (event.getEntity() instanceof ServerPlayer player) {
             increment(player, DEATHS_KEY);
             var source = event.getSource();
-            if (source.getEntity() instanceof Zombie) record(player, "zombie_death", 1, 500);
+            if (source.getEntity() instanceof Zombie) record(player, "zombie_death", 500);
+            if (source.getEntity() != null && net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(source.getEntity().getType()).equals(ResourceLocation.fromNamespaceAndPath("alexsmobs", "centipede_head"))) record(player, "centipede_death", 1);
             if (source.getEntity() instanceof ServerPlayer) record(player, "player_death", 1);
             if (source.is(DamageTypeTags.IS_FALL)) record(player, "fall_death", 1);
             if (source.is(DamageTypes.DROWN)) record(player, "drown_death", 1);
